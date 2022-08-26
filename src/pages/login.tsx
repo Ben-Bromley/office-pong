@@ -1,8 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
+import { getCsrfToken } from "next-auth/react";
 
-const Login: NextPage = () => {
+const Login: NextPage = ({ csrfToken }) => {
 
   return (
     <>
@@ -15,13 +15,14 @@ const Login: NextPage = () => {
         <section className="md:p-2 text-center h-screen flex flex-col justify-center align-center">
           <div style={{ marginTop: -40 }} className="p-4">
             <h1 className="transition text-2xl md:text-3xl text-white font-medium">Register</h1>
-            <form className="mt-4 p-6 bg-white max-w-xs mx-auto rounded overflow-hidden">
-                <input className="min-w-full border p-2 rounded-md mb-2" required type="email" name="email" id="email" placeholder="Email" />
-                <input className="min-w-full border p-2 rounded-md mb-2" required type="password" name="password" id="password" placeholder="Password" />
-                <div>
-                  <input type="submit" value="Login" className="font-medium w-full border-2 border-blue-500 mt-2 p-2 rounded bg-blue-500 text-white hover:bg-blue-600" />
-                  <p className="mt-4 text-sm">Don't have an account? <a href="/register" className="font-medium text-blue-500 hover:text-blue-700">Register</a></p>
-                </div>
+            <form method="POST" action="/api/auth/callback/credentials" className="mt-4 p-6 bg-white max-w-xs mx-auto rounded overflow-hidden">
+              <input type="hidden" name="csrfToken" defaultValue={csrfToken} />
+              <input className="min-w-full border p-2 rounded-md mb-2" required type="email" name="email" id="email" placeholder="Email" />
+              <input className="min-w-full border p-2 rounded-md mb-2" required type="password" name="password" id="password" placeholder="Password" />
+              <div>
+                <input type="submit" value="Login" className="font-medium w-full border-2 border-blue-500 mt-2 p-2 rounded bg-blue-500 text-white hover:bg-blue-600" />
+                <p className="mt-4 text-sm">Don't have an account? <a href="/register" className="font-medium text-blue-500 hover:text-blue-700">Register</a></p>
+              </div>
             </form>
           </div>
           <a href="/" className="text-white hover:text-blue-300 mx-auto text-sm">Return To Home</a>
@@ -33,3 +34,11 @@ const Login: NextPage = () => {
 };
 
 export default Login;
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      csrfToken: await getCsrfToken(context),
+    },
+  }
+}
