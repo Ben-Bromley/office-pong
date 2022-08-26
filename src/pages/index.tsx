@@ -22,7 +22,7 @@ const Home: NextPage = ({ providers }) => {
       <main className="md:grid md:grid-cols-2">
         <section className="md:p-2 text-center h-screen flex flex-col justify-center align-center">
           <div>
-            <h1 className="transition text-2xl md:text-3xl text-gray-700">Ping Pong Leaderboard</h1>
+            <h1 className="transition text-2xl md:text-3xl text-gray-700">🏓 Ping Pong Leaderboard</h1>
             <p>Yep, it's finally done!</p>
             <div className="mt-8">
               {!session && (<>
