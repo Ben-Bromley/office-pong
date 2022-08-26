@@ -15,6 +15,8 @@ type newGameData = {
 
 const Dashboard: NextPage = () => {
   const users = trpc.useQuery(["user.getAll"]);
+  const games = trpc.useQuery(["game.getAll"]);
+  const newGame = trpc.useMutation(["game.create"]);
   const { data: session, status } = useSession();
   const router = useRouter();
   // set initial input states
@@ -46,13 +48,14 @@ const Dashboard: NextPage = () => {
     // TODO: Check scores > 11 are only 2 points apart (valid scores)
 
     // create new user data
-    const newGameData = {
+    const newGameData: newGameData = {
       p1,
       p2,
-      p1_score: p1Score,
-      p2_score: p2Score
+      p1_score: parseInt(p1Score),
+      p2_score: parseInt(p2Score)
     }
     console.log(newGameData);
+    newGame.mutate({ ...newGameData });
 
   }
 
@@ -65,33 +68,45 @@ const Dashboard: NextPage = () => {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <main className="">
-          <h1>Welcome, {session?.user?.name?.split(" ")[0]}</h1>
-          <div>
-            <h2>New Game:</h2>
-            <form id="new-game-form" onSubmit={handleSubmitGame}>
-              <h3>PLAYER ONE:</h3>
-              <select name="p1" id="p1" value={p1} onChange={(e) => setP1(e.target.value)} className="border-2 rounded-md p-2 mx-2">
-                {users && users?.data?.map(user => {
-                  return (
-                    <option key={user.id} value={user.id}>{user.name}</option>
-                  )
+        <main className="grid grid-cols-2">
+          <section className="border-2">
+            <h1>Welcome, {session?.user?.name?.split(" ")[0]}</h1>
+            <div>
+              <h2>New Game:</h2>
+              <form id="new-game-form" onSubmit={handleSubmitGame}>
+                <h3>PLAYER ONE:</h3>
+                <select name="p1" id="p1" value={p1} onChange={(e) => setP1(e.target.value)} className="border-2 rounded-md p-2 mx-2 w-48">
+                  {users && users?.data?.map(user => {
+                    return (
+                      <option key={user.id} value={user.id}>{user.name}</option>
+                    )
+                  })}
+                </select>
+                <input type="number" value={p1Score} onChange={(e) => { setP1Score(e.target.value) }} min="0" max="50" name="p1_score" id="p1_score" className="border-2 rounded-md p-2 mx-2" />
+                <h3>PLAYER TWO:</h3>
+                <select name="p2" id="p2" value={p2} onChange={(e) => setP2(e.target.value)} className="border-2 rounded-md p-2 mx-2 w-48">
+                  <option value="DEFAULT" disabled> - Select Opponent - </option>
+                  {users && users?.data?.map(user => {
+                    return (
+                      <option key={user.id} value={user.id}>{user.name}</option>
+                    )
+                  })}
+                </select>
+                <input type="number" value={p2Score} onChange={(e) => { setP2Score(e.target.value) }} min="0" max="50" name="p2_score" id="p2_score" className="border-2 rounded-md p-2 mx-2" />
+                <input type="submit" value="Submit Results" className="block w-40 text-center font-medium border-2 border-blue-500 mt-2 p-2 rounded bg-blue-500 text-white hover:bg-blue-600" />
+              </form>
+            </div>
+          </section>
+          <section className="border-2">
+            <h1>🏓 Game History</h1>
+            <div>
+              <ul>
+                {games?.data?.map(g => {
+                  return (<li key={g.id}>{g.playerOneScore} - {g.playerTwoScore}</li>)
                 })}
-              </select>
-              <input type="number" value={p1Score} onChange={(e) => { setP1Score(e.target.value) }} min="0" max="50" name="p1_score" id="p1_score" className="border-2 rounded-md p-2 mx-2" />
-              <h3>PLAYER TWO:</h3>
-              <select name="p2" id="p2" value={p2} onChange={(e) => setP2(e.target.value)} className="border-2 rounded-md p-2 mx-2">
-                <option value="DEFAULT" disabled> - Select Opponent - </option>
-                {users && users?.data?.map(user => {
-                  return (
-                    <option key={user.id} value={user.id}>{user.name}</option>
-                  )
-                })}
-              </select>
-              <input type="number" value={p2Score} onChange={(e) => { setP2Score(e.target.value) }} min="0" max="50" name="p2_score" id="p2_score" className="border-2 rounded-md p-2 mx-2" />
-              <input type="submit" value="Submit Results" className="block w-40 text-center font-medium border-2 border-blue-500 mt-2 p-2 rounded bg-blue-500 text-white hover:bg-blue-600" />
-            </form>
-          </div>
+              </ul>
+            </div>
+          </section>
         </main>
       </>
     );
