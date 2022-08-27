@@ -13,7 +13,7 @@ export const matchRouter = createRouter()
     async resolve({ input, ctx }) {
       try {
         // create user in db
-        const user = await ctx.prisma.game.create({
+        const user = await ctx.prisma.match.create({
           data: {
             playerOneId: input.p1,
             playerOneScore: input.p1_score,
@@ -32,6 +32,6 @@ export const matchRouter = createRouter()
   })
   .query("getAll", {
     async resolve({ ctx }) {
-      return await ctx.prisma.game.findMany();
+      return await ctx.prisma.match.findMany();
     },
   });

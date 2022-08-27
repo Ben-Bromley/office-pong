@@ -63,7 +63,7 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-model Game {
+model Match {
     id             String @id @default(cuid())
     playerOneId    String
     playerOneScore Int

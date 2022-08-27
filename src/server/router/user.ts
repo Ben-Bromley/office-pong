@@ -47,16 +47,16 @@ export const userRouter = createRouter()
       let users = await ctx.prisma.user.findMany();
       if (input?.with?.includes("wins")) {
         // get users and games data
-        let games = await ctx.prisma.game.findMany();
+        let matches = await ctx.prisma.match.findMany();
         // for each user, return the user, with total wins
         let usersWithWins: UserWithWins[] = users.map((user) => {
           let wins = 0;
           // get all games for user
-          let userGames = games.filter((g) => [g.playerOneId, g.playerTwoId].includes(user.id));
-          userGames.forEach(game => {
+          let userGames = matches.filter((g) => [g.playerOneId, g.playerTwoId].includes(user.id));
+          userGames.forEach(match => {
             // if user won, increase the win count
-            if ((game.playerOneId === user.id && game.playerOneScore > game.playerTwoScore) ||
-              (game.playerTwoId === user.id && game.playerTwoScore > game.playerOneScore)) {
+            if ((match.playerOneId === user.id && match.playerOneScore > match.playerTwoScore) ||
+              (match.playerTwoId === user.id && match.playerTwoScore > match.playerOneScore)) {
               wins = ++wins;
             }
           })

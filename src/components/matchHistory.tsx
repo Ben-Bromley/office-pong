@@ -1,18 +1,17 @@
 import { User } from "@prisma/client";
-import { UseQueryResult } from "react-query"
 import { trpc } from "../utils/trpc";
-import GameHistoryItem from "./matchHistoryItem";
+import MatchHistoryItem from "./matchHistoryItem";
 
 type Props = {
   players: Array<User> | undefined
 }
 
 const GameHistory: React.FC<Props> = ({ players }) => {
-  const games = trpc.useQuery(["match.getAll"]);
+  const matches = trpc.useQuery(["match.getAll"]);
 
-  const gamesToDisplay = games?.data?.map(g => {
+  const matchesToDisplay = matches?.data?.map(m => {
     return (
-      <GameHistoryItem key={g.id} game={g} players={players} />
+      <MatchHistoryItem key={m.id} game={m} players={players} />
     )
   })
 
@@ -21,7 +20,7 @@ const GameHistory: React.FC<Props> = ({ players }) => {
       <h2 className="text-2xl mb-4">🏓 Match History</h2>
       <div>
         <ul>
-          {gamesToDisplay}
+          {matchesToDisplay}
         </ul>
       </div>
     </>
