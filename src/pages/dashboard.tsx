@@ -5,7 +5,7 @@ import { useSession, signIn, signOut } from "next-auth/react"
 import { useRouter } from "next/router";
 import { FormEvent, ReactHTMLElement, useEffect, useState } from "react";
 import LoadingSpinnerScreen from "../components/loadingSpinnerScreen";
-import GameHistory from "../components/gameHistory";
+import MatchHistory from "../components/matchHistory";
 import Leaderboard from "../components/leaderboard";
 
 type newGameData = {
@@ -17,7 +17,7 @@ type newGameData = {
 
 const Dashboard: NextPage = () => {
   const users = trpc.useQuery(["user.getAll"]);
-  const newGame = trpc.useMutation(["game.create"]);
+  const newGame = trpc.useMutation(["match.create"]);
   const { data: session, status } = useSession();
   const router = useRouter();
   // set initial input states
@@ -99,7 +99,7 @@ const Dashboard: NextPage = () => {
             </div>
           </section>
           <section className="border-2 m-2 p-2 rounded-md">
-            <GameHistory players={users.data} />
+            <MatchHistory players={users.data} />
           </section>
           <section className="border-2 m-2 p-2 rounded-md">
             <Leaderboard />

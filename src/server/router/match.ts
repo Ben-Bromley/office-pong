@@ -1,7 +1,7 @@
 import { createRouter } from "./context";
 import { z } from "zod";
 
-export const gameRouter = createRouter()
+export const matchRouter = createRouter()
   .mutation("create", {
     input: z
       .object({
