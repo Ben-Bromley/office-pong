@@ -5,6 +5,8 @@ import { useSession, signIn, signOut } from "next-auth/react"
 import { useRouter } from "next/router";
 import { FormEvent, ReactHTMLElement, useEffect, useState } from "react";
 import LoadingSpinnerScreen from "../components/loadingSpinnerScreen";
+import GameHistory from "../components/gameHistory";
+import Leaderboard from "../components/leaderboard";
 
 type newGameData = {
   p1: string;
@@ -15,7 +17,6 @@ type newGameData = {
 
 const Dashboard: NextPage = () => {
   const users = trpc.useQuery(["user.getAll"]);
-  const games = trpc.useQuery(["game.getAll"]);
   const newGame = trpc.useMutation(["game.create"]);
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -27,7 +28,7 @@ const Dashboard: NextPage = () => {
 
   useEffect(() => {
     if (status !== "loading" && !session) router.push('/');
-  }, [])
+  }, [status])
 
   useEffect(() => {
     if (session?.user) setP1(session.user?.id)
@@ -68,11 +69,11 @@ const Dashboard: NextPage = () => {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <main className="grid grid-cols-2">
-          <section className="border-2">
-            <h1>Welcome, {session?.user?.name?.split(" ")[0]}</h1>
+        <main className="grid grid-cols-2 m-2">
+          <section className="border-2 m-2 p-2 rounded-md">
+            <h1 className="font-bold">Welcome, {session?.user?.name?.split(" ")[0]}</h1>
             <div>
-              <h2>New Game:</h2>
+              <h2 className="text-2xl">New Game:</h2>
               <form id="new-game-form" onSubmit={handleSubmitGame}>
                 <h3>PLAYER ONE:</h3>
                 <select name="p1" id="p1" value={p1} onChange={(e) => setP1(e.target.value)} className="border-2 rounded-md p-2 mx-2 w-48">
@@ -97,15 +98,11 @@ const Dashboard: NextPage = () => {
               </form>
             </div>
           </section>
-          <section className="border-2">
-            <h1>🏓 Game History</h1>
-            <div>
-              <ul>
-                {games?.data?.map(g => {
-                  return (<li key={g.id}>{g.playerOneScore} - {g.playerTwoScore}</li>)
-                })}
-              </ul>
-            </div>
+          <section className="border-2 m-2 p-2 rounded-md">
+            <GameHistory players={users.data} />
+          </section>
+          <section className="border-2 m-2 p-2 rounded-md">
+            <Leaderboard />
           </section>
         </main>
       </>
