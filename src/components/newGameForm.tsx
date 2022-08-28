@@ -50,8 +50,13 @@ const newGameForm: React.FC<Props> = ({ players }) => {
       p1_score: parseInt(p1Score),
       p2_score: parseInt(p2Score)
     }
-    console.log(newGameData);
-    newGame.mutate({ ...newGameData });
+
+    try {
+      newGame.mutate({ ...newGameData });
+    } catch (e: any) {
+      console.log(e.message);
+    }
+    location.reload();
   }
 
   // render component
