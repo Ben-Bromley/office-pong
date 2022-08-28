@@ -6,7 +6,7 @@ type Props = {
   players: User[] | undefined;
 }
 
-const GameHistoryItem: React.FC<Props> = ({ game: match, players }) => {
+const MatchHistoryItem: React.FC<Props> = ({ game: match, players }) => {
   const [winnerId, setWinner] = useState('');
 
   const p1 = players && players.find((p: User) => p.id === match.playerOneId);
@@ -19,7 +19,8 @@ const GameHistoryItem: React.FC<Props> = ({ game: match, players }) => {
     if (match.playerOneScore < match.playerTwoScore) {
       setWinner(match.playerTwoId);
     }
-  }, []);
+  }, [match]);
+
   return (
     <li key={match.id} className="bg-gray-200 px-4 py-2 flex justify-between">
       <p>
@@ -34,4 +35,4 @@ const GameHistoryItem: React.FC<Props> = ({ game: match, players }) => {
   )
 }
 
-export default GameHistoryItem
+export default MatchHistoryItem

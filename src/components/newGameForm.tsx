@@ -14,7 +14,7 @@ type Props = {
   players: User[] | undefined
 }
 
-const newGameForm: React.FC<Props> = ({ players }) => {
+const NewGameForm: React.FC<Props> = ({ players }) => {
   const newGame = trpc.useMutation(["match.create"]);
   const { data: session, status } = useSession();
 
@@ -91,4 +91,4 @@ const newGameForm: React.FC<Props> = ({ players }) => {
   </>)
 }
 
-export default newGameForm;
+export default NewGameForm;

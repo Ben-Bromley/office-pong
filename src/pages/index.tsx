@@ -2,13 +2,9 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { trpc } from "../utils/trpc";
 import { useSession, signIn, getProviders, signOut } from "next-auth/react"
 
 const Home: NextPage<any> = ({ providers }) => {
-  // const users = trpc.useQuery(["user.getAll"]);
-  // if (users && !users.isLoading) console.log(users.data);
-
   const { data: session } = useSession();
 
   return (
@@ -25,7 +21,7 @@ const Home: NextPage<any> = ({ providers }) => {
           <div className="fixed inset-0 bg-white bg-opacity-60 h-screen w-screen"></div>
           <div className="z-10">
             <h1 className="transition text-2xl md:text-3xl text-gray-700">🏓 Ping Pong Leaderboard</h1>
-            <p>Yep, it's finally done!</p>
+            <p>Yep, it&apos;s finally done!</p>
             <div className="mt-8">
               {!session && (<>
                 {/* <Link href="/register">

@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { trpc } from "../utils/trpc";
 
 type newUserData = {
@@ -52,11 +53,11 @@ const Register: NextPage = () => {
               <input className="min-w-full border p-2 rounded-md mb-2" required type="password" name="confirmpassword" id="confirmpassword" placeholder="Confirm Password" />
               <div>
                 <input type="submit" value="Create Account" className="font-medium w-full border-2 border-blue-500 mt-2 p-2 rounded bg-blue-500 text-white hover:bg-blue-600" />
-                <p className="mt-4 text-sm">Already have an account? <a href="/login" className="font-medium text-blue-500 hover:text-blue-700">Login</a></p>
+                <p className="mt-4 text-sm">Already have an account? <Link href="/login" className="font-medium text-blue-500 hover:text-blue-700">Login</Link></p>
               </div>
             </form>
           </div>
-          <a href="/" className="text-white hover:text-blue-300 mx-auto text-sm">Return To Home</a>
+          <Link href="/" className="text-white hover:text-blue-300 mx-auto text-sm">Return To Home</Link>
         </section>
 
       </main>
