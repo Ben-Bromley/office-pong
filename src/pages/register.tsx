@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import { trpc } from "../utils/trpc";
 
 type newUserData = {
@@ -10,6 +9,7 @@ type newUserData = {
 }
 
 const Register: NextPage = () => {
+  return (<>This Page Has Been Removed</>);
   const newUserMutation = trpc.useMutation(['user.create'])
 
   const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {

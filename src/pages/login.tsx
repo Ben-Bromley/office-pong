@@ -2,8 +2,8 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { getCsrfToken } from "next-auth/react";
 
-const Login: NextPage = ({ csrfToken }) => {
-
+const Login: NextPage<any> = ({ csrfToken }) => {
+  return (<>This Page Has Been Removed</>);
   return (
     <>
       <Head>
@@ -35,7 +35,7 @@ const Login: NextPage = ({ csrfToken }) => {
 
 export default Login;
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: any) {
   return {
     props: {
       csrfToken: await getCsrfToken(context),
