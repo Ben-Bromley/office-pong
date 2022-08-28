@@ -16,14 +16,15 @@ const GameHistory: React.FC<Props> = ({ players }) => {
   })
 
   return (
-    <>
-      <h2 className="text-2xl mb-4">🏓 Match History</h2>
+    <section className="">
+      <h2 className="text-lg font-bold mb-4">🏓 Match History</h2>
       <div>
         <ul>
           {matchesToDisplay}
+          {matchesToDisplay?.length == 0 && <p>Go Play Some Ping Pong!</p>}
         </ul>
       </div>
-    </>
+    </section>
   )
 }
 

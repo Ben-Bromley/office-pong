@@ -21,7 +21,9 @@ const Home: NextPage = ({ providers }) => {
 
       <main className="md:grid md:grid-cols-2">
         <section className="md:p-2 text-center h-screen flex flex-col justify-center align-center">
-          <div>
+          <div className="fixed inset-0 bg-white-texture bg-repeat h-screen w-screen"></div>
+          <div className="fixed inset-0 bg-white bg-opacity-60 h-screen w-screen"></div>
+          <div className="z-10">
             <h1 className="transition text-2xl md:text-3xl text-gray-700">🏓 Ping Pong Leaderboard</h1>
             <p>Yep, it's finally done!</p>
             <div className="mt-8">
@@ -56,7 +58,7 @@ const Home: NextPage = ({ providers }) => {
                       Go To Dashboard
                     </button>
                   </Link>
-                  <button onClick={()=>signOut()} className="font-medium w-48 border-2 border-blue-500 m-2 p-2 rounded text-blue-500">
+                  <button onClick={() => signOut()} className="font-medium w-48 border-2 border-blue-500 m-2 p-2 rounded text-blue-500">
                     Sign Out
                   </button>
                 </div>

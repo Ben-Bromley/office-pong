@@ -23,21 +23,19 @@ const PlayerLeaderboard: React.FC = () => {
   players = players?.sort((a, b) => a.wins < b.wins ? 1 : -1);
   return (
     <>
-      <h2 className="text-2xl">Leaderboard</h2>
+      <h2 className="text-lg font-bold mb-4">Leaderboard</h2>
       <div>
         <ul>
           {players && players?.map((p, idx) => {
-            return (
-              <li key={p.id} className="bg-gray-200 px-4 py-2 flex justify-between">
-                <div className="flex">
-                  <span className="mr-2">#{idx + 1}</span>
-                  <p className="mx-2">
-                    {p.name}
-                  </p>
-                </div>
-                <p>Wins: {p.wins}</p>
-              </li>
-            )
+            return (<li key={p.id} className="bg-gray-100 rounded-md px-4 py-2 flex justify-between mb-2">
+              <div className="flex">
+                <span className="mr-2">#{idx + 1}</span>
+                <p className="mx-2">
+                  {p.name}
+                </p>
+              </div>
+              <p>Wins: {p.wins}</p>
+            </li>)
           })}
         </ul>
       </div>

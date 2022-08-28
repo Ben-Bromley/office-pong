@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'white-texture': "url('/images/bg-texture.jpg')"
+      }
+    },
   },
   plugins: [],
 };
