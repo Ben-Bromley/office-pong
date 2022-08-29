@@ -1,4 +1,5 @@
 import { User } from "@prisma/client";
+import { array } from "zod";
 import { trpc } from "../utils/trpc"
 
 interface UserWithWins extends User {
@@ -7,20 +8,45 @@ interface UserWithWins extends User {
 
 const PlayerLeaderboard: React.FC = () => {
   const playerQuery = trpc.useQuery(["user.getAll", { with: ["wins"] }]);
-  /**
-   * Typescript is too stupid to understand the backend logic
-   * basically we map over an array of User[], and add the win attribute
-   * It's then returned as UserWithWins[].
-   * 
-   * Typescript is ignoring the if statement, so it doesn't realise 
-   * that the actual returned type is different than the default.
-   * 
-   * The things we do for typesafety eh?
-   */
+  // assert type
   let players = playerQuery.data as UserWithWins[] | undefined;
 
   // sort players
   players = players?.sort((a, b) => a.wins < b.wins ? 1 : -1);
+
+  /**
+   * check if more than one players have the same first name
+   * @param name player name to check
+   * @return true if first name is duplicate
+   */
+  const hasDuplicateFirstName = (name: string | null) => {
+    // get first name from name
+    let firstName = name?.split(" ")[0] || '';
+    if (!firstName || typeof firstName !== "string") return false;
+    // check if firstName exists already, and remove
+    let allPlayerNames = players?.map(p => p.name?.split(" ")[0] || '');
+    let firstNameIndex = allPlayerNames?.indexOf(firstName) ?? -1
+    if (firstNameIndex !== -1) allPlayerNames?.splice(firstNameIndex, 1)
+
+    // if there's not another instance of that name, it's not duplicate
+    if (allPlayerNames?.indexOf(firstName) === -1) return false;
+    // if first name exists more than once, it's duplicate
+    return true;
+  }
+
+  /**
+   * Format player name based on uniqueness
+   * @returns formmated name
+   */
+  const formatName = (name: string | null) => {
+    // if first name is duplicate, include surname initial
+    if (name && hasDuplicateFirstName(name)) {
+      let surInitial = name?.split(" ")[1] ? name?.split(" ")[1]?.[0] : '';
+      return `${name?.split(" ")[0]} ${surInitial}.`
+    }
+    return name?.split(" ")[0];
+  }
+
   return (
     <>
       <h2 className="text-lg font-bold mb-4">Leaderboard</h2>
@@ -31,7 +57,7 @@ const PlayerLeaderboard: React.FC = () => {
               <div className="flex">
                 <span className="mr-2">#{idx + 1}</span>
                 <p className="mx-2">
-                  {p.name}
+                  {formatName(p.name)}
                 </p>
               </div>
               <p>Wins: {p.wins}</p>
