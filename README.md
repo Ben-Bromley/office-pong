@@ -1,3 +1,24 @@
+# Office Pong
+
+
+Hey! Welcome to the Office Pong repo. I was challenged to build this by my fellow developers at [REVIEWS.io](https://reviews.io) so that we could all track our scores when we play ping pong at lunch. 
+
+I worked on this for months building a custom API to integrate with firebase, but then one of the developers had mentioned something called "the t3 stack"
+
+I had no clue what that was, but I looked into the repository: [t3-oss/create-t3-app](https://github.com/t3-oss/create-t3-app)
+
+Despite being terrified of building a full stack application with brand new technologies for the first time, I dove in, and an application that took me 3 MONTHS to build with NEXT.js and firebase, only took FIVE DAYS with this t3 stack. I couldn't believe how simple everything was. 
+
+---
+
+This project can easily be forked and deployed by anyone. You just need a database, Google Auth Client credentials, and a platform to deploy the app itself on. 
+
+I highly recommend this stack to anyone looking to create a full-stack, type-safe web application in no time.
+
+---
+
+Default create-t3-app README:
+
 # Create T3 App
 
 This is an app bootstrapped according to the [init.tips](https://init.tips) stack, also known as the T3-Stack.
