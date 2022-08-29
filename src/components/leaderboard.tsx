@@ -1,5 +1,4 @@
 import { User } from "@prisma/client";
-import { array } from "zod";
 import { trpc } from "../utils/trpc"
 
 interface UserWithWins extends User {
@@ -21,11 +20,11 @@ const PlayerLeaderboard: React.FC = () => {
    */
   const hasDuplicateFirstName = (name: string | null) => {
     // get first name from name
-    let firstName = name?.split(" ")[0] || '';
+    const firstName = name?.split(" ")[0] || '';
     if (!firstName || typeof firstName !== "string") return false;
     // check if firstName exists already, and remove
-    let allPlayerNames = players?.map(p => p.name?.split(" ")[0] || '');
-    let firstNameIndex = allPlayerNames?.indexOf(firstName) ?? -1
+    const allPlayerNames = players?.map(p => p.name?.split(" ")[0] || '');
+    const firstNameIndex = allPlayerNames?.indexOf(firstName) ?? -1
     if (firstNameIndex !== -1) allPlayerNames?.splice(firstNameIndex, 1)
 
     // if there's not another instance of that name, it's not duplicate
@@ -41,7 +40,7 @@ const PlayerLeaderboard: React.FC = () => {
   const formatName = (name: string | null) => {
     // if first name is duplicate, include surname initial
     if (name && hasDuplicateFirstName(name)) {
-      let surInitial = name?.split(" ")[1] ? name?.split(" ")[1]?.[0] : '';
+      const surInitial = name?.split(" ")[1] ? name?.split(" ")[1]?.[0] : '';
       return `${name?.split(" ")[0]} ${surInitial}.`
     }
     return name?.split(" ")[0];
