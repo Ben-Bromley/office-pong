@@ -20,7 +20,7 @@ const LoadingSpinnerScreen: React.FC = () => {
         width: 13px;
         height: 13px;
         border-radius: 50%;
-        background: #cef;
+        background: #4894e0;
         animation-timing-function: cubic-bezier(0, 1, 1, 0);
       }
       .lds-ellipsis div:nth-child(1) {

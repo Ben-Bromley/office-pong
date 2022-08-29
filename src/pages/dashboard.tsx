@@ -37,13 +37,13 @@ const Dashboard: NextPage = () => {
           <main className="absolute inset-0 p-4 max-w-5xl mx-auto h-screen flex flex-col max-h-[800px]">
             <nav className="flex justify-between items-center flex-wrap px-8 py-4">
               <h1 className="font-bold mr-4">Welcome, {session?.user?.name?.split(" ")[0]}</h1>
-              <div className="space-x-2 flex flex-grow max-w-md my-2">
+              <div className="flex flex-grow flex-wrap max-w-md my-2">
                 <Link href="/">
-                  <button className="mx-auto flex-grow flex-shrink font-medium w-40 border-2 bg-white bg-opacity-50 border-blue-500 p-2 rounded text-blue-500">
+                  <button className="m-1 flex-grow flex-shrink font-medium w-40 border-2 bg-white bg-opacity-50 border-blue-500 p-2 rounded text-blue-500">
                     Go To Homepage
                   </button>
                 </Link>
-                <button onClick={() => signOut()} className="mx-auto flex-grow flex-shrink font-medium w-40 border-2 bg-white bg-opacity-50 border-blue-500 p-2 rounded text-blue-500">
+                <button onClick={() => signOut()} className="m-1 flex-grow flex-shrink font-medium w-40 border-2 bg-white bg-opacity-50 border-blue-500 p-2 rounded text-blue-500">
                   Sign Out
                 </button>
               </div>
