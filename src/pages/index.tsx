@@ -3,9 +3,12 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useSession, signIn, getProviders, signOut } from "next-auth/react"
+import { authOptions } from "./api/auth/[...nextauth]";
+import { unstable_getServerSession } from "next-auth";
 
-const Home: NextPage<any> = ({ providers }) => {
-  const { data: session } = useSession();
+const Home: NextPage<any> = ({ providers, serverSession }) => {
+  const { data: clientSession } = useSession();
+  const session = serverSession ? serverSession : clientSession;
 
   return (
     <>
@@ -75,9 +78,10 @@ const Home: NextPage<any> = ({ providers }) => {
 
 export default Home;
 
-export async function getServerSideProps(context:any) {
+export async function getServerSideProps(context: any) {
   const providers = await getProviders()
+  const serverSession = await unstable_getServerSession(context.req, context.res, authOptions)
   return {
-    props: { providers },
+    props: { providers, serverSession },
   }
 }
