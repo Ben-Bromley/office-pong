@@ -35,7 +35,7 @@ const NewGameForm: React.FC<Props> = ({ players }) => {
 
 
     if (!p1 || !p2 || !parseInt(p1Score) || !parseInt(p2Score)) {
-      console.log({p1, p2, p1Score, p2Score});
+      console.log({ p1, p2, p1Score, p2Score });
       return alert("please fill in all fields!");
     } else if (parseInt(p1Score) < 11 && parseInt(p2Score) < 11) {
       return alert("You've not finished yet!");
@@ -67,9 +67,7 @@ const NewGameForm: React.FC<Props> = ({ players }) => {
         <h3 className="w-8 font-light flex items-center">P1:</h3>
         <select name="p1" id="p1" value={p1} onChange={(e) => setP1(e.target.value)} className="flex-grow border rounded-md p-2 mx-2 w-48">
           {players && players?.map(player => {
-            return (
-              <option key={player.id} value={player.id}>{player.name}</option>
-            )
+            return <option key={player.id} value={player.id} disabled={player.id == p2}>{player.name}</option>
           })}
         </select>
         <input type="number" value={p1Score} onChange={(e) => { setP1Score(e.target.value) }} min="0" max="50" name="p1_score" id="p1_score" className="w-18 border rounded-md p-2 mx-2" />
@@ -79,9 +77,7 @@ const NewGameForm: React.FC<Props> = ({ players }) => {
         <select name="p2" id="p2" value={p2} onChange={(e) => setP2(e.target.value)} className="flex-grow border rounded-md p-2 mx-2 w-48">
           <option value="DEFAULT" disabled> - Select Opponent - </option>
           {players && players?.map(player => {
-            return (
-              <option key={player.id} value={player.id}>{player.name}</option>
-            )
+            return <option key={player.id} value={player.id} disabled={player.id == p1}>{player.name}</option>
           })}
         </select>
         <input type="number" value={p2Score} onChange={(e) => { setP2Score(e.target.value) }} min="0" max="50" name="p2_score" id="p2_score" className="w-18 border rounded-md p-2 mx-2" />
