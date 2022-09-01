@@ -8,7 +8,8 @@ type Props = {
 }
 
 const GameHistory: React.FC<Props> = ({ players }) => {
-  const matches = trpc.useQuery(["match.getAll"]);
+  const matchesQuery = trpc.useQuery(["match.getAll"]);
+  let matches = matchesQuery;
 
   const matchesToDisplay = matches?.data?.map(m => {
     return (
