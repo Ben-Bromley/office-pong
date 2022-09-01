@@ -22,7 +22,7 @@ const MatchHistoryItem: React.FC<Props> = ({ game: match, players }) => {
   }, [match]);
 
   return (
-    <li key={match.id} className="bg-gray-200 px-4 py-2 flex justify-between">
+    <li key={match.id} className="bg-gray-100 px-4 py-2 mb-2 flex rounded justify-between">
       <p>
         <span className={`${p1?.id === winnerId ? "text-green-500" : "text-red-500"}`}>{p1?.name}</span>
         <span className="font-light text-xs">{' vs. '}</span>
