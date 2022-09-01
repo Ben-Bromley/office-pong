@@ -1,5 +1,6 @@
 import { User } from "@prisma/client";
 import { trpc } from "../utils/trpc"
+import SkeletonLoader from "../components/skeletonLoader";
 
 interface UserWithWins extends User {
   wins: number;
@@ -49,21 +50,20 @@ const PlayerLeaderboard: React.FC = () => {
   return (
     <>
       <h2 className="text-lg font-bold mb-4">Leaderboard</h2>
-      <div>
-        <ul>
-          {players && players?.map((p, idx) => {
-            return (<li key={p.id} className="bg-gray-100 rounded-md px-4 py-2 flex justify-between mb-2">
-              <div className="flex">
-                <span className="mr-2">#{idx + 1}</span>
-                <p className="mx-2">
-                  {formatName(p.name)}
-                </p>
-              </div>
-              <p>Wins: {p.wins}</p>
-            </li>)
-          })}
-        </ul>
-      </div>
+      <ul className="max-h-[36rem] overflow-scroll rounded-lg">
+        {!players && <SkeletonLoader rows={3} />}
+        {players && players?.map((p, idx) => {
+          return (<li key={p.id} className="bg-gray-100 rounded-md px-4 py-2 flex justify-between mb-2">
+            <div className="flex">
+              <span className="mr-2">#{idx + 1}</span>
+              <p className="mx-2">
+                {formatName(p.name)}
+              </p>
+            </div>
+            <p>Wins: {p.wins}</p>
+          </li>)
+        })}
+      </ul>
     </>
   )
 }
