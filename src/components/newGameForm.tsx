@@ -86,7 +86,7 @@ const NewGameForm: React.FC<Props> = ({ players }) => {
         </select>
         <input type="number" value={p2Score} onChange={(e) => { setP2Score(e.target.value) }} min="0" max="50" name="p2_score" id="p2_score" className="w-18 border rounded-md p-2 mx-2" />
       </div>
-      <input type="submit" value="Submit Results" className="w-44 text-center font-medium border-2 border-blue-500 mt-4 p-2 rounded bg-blue-500 text-white hover:bg-blue-600" />
+      <input type="submit" value="Submit Results" className="w-44 text-center transition-all font-medium border-2 border-blue-500 mt-4 p-2 rounded bg-blue-500 text-white hover:bg-blue-600" />
     </form>
   </>)
 }
