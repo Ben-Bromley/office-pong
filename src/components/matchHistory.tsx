@@ -12,7 +12,7 @@ const GameHistory: React.FC<Props> = ({ players }) => {
   let matches = matchesQuery.data;
 
   // sort games by date
-  matches = matches?.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
+  matches = matches?.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
   const matchesToDisplay = matches?.map(m => {
     return <MatchHistoryItem key={m.id} game={m} players={players} />
