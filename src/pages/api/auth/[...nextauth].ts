@@ -1,12 +1,11 @@
-import NextAuth, { type NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
+import NextAuth, { type NextAuthOptions } from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
 
 // Prisma adapter for NextAuth, optional and can be removed
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { prisma } from "../../../server/db/client";
-import { env } from "../../../env/server.mjs";
-import { PrismaClient } from "@prisma/client";
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import { prisma } from '../../../server/db/client';
+import { env } from '../../../env/server.mjs';
+import { PrismaClient } from '@prisma/client';
 
 const prismaClient = new PrismaClient();
 
@@ -18,7 +17,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = user.id;
       }
       return session;
-    },
+    }
   },
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prisma),
@@ -26,7 +25,7 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
-    }),
+    })
     // ...add more providers here
     // CredentialsProvider({
     //   // The name to display on the sign in form (e.g. "Sign in with...")
@@ -54,12 +53,12 @@ export const authOptions: NextAuthOptions = {
     //     } else {
     //       // If you return null then an error will be displayed advising the user to check their details.
     //       return null
-  
+
     //       // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
     //     }
     //   }
     // })
-  ],
+  ]
   // secret: process.env.NEXTAUTH_SECRET,
   // session: {
   //   strategy: "jwt"
