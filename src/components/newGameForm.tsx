@@ -33,10 +33,11 @@ const NewGameForm: React.FC<Props> = ({ players }) => {
   const handleSubmitGame = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!p1 || !p2) return;
+    if (!p1 || !p2 || p1 === 'DEFAULT' || p2 === 'DEFAULT') return;
     if (!+p1Score && !+p2Score) return;
-    if (+p1Score && +p2Score < 11) return alert('Please enter a score of 11 or more');
-    if (+p1Score && +p2Score > 11 && Math.abs(parseInt(p1Score) - parseInt(p2Score)) > 2)
+    if (+p1Score === +p2Score) return;
+    if (+p1Score < 11 && +p2Score < 11) return alert('Please enter a score of 11 or more');
+    if (+p1Score >= 11 && +p2Score >= 11 && Math.abs(+p1Score - +p2Score) > 2)
       return alert('Scores must be within 2 points of each other');
 
     // create new user data
@@ -58,7 +59,7 @@ const NewGameForm: React.FC<Props> = ({ players }) => {
   // render component
   return (
     <>
-      <h2 className="text-lg font-bold mb-4">New Game:</h2>
+      <h2 className="text-lg font-bold mb-4">New Game</h2>
       <form id="new-game-form" onSubmit={handleSubmitGame}>
         <div className="flex justify-between mb-2">
           <h3 className="w-8 font-light flex items-center">P1:</h3>
@@ -68,6 +69,7 @@ const NewGameForm: React.FC<Props> = ({ players }) => {
             value={p1}
             onChange={(e) => setP1(e.target.value)}
             className="flex-grow border rounded-md p-2 mx-2 w-48"
+            required
           >
             {players &&
               players?.map((player) => {
@@ -99,6 +101,7 @@ const NewGameForm: React.FC<Props> = ({ players }) => {
             value={p2}
             onChange={(e) => setP2(e.target.value)}
             className="flex-grow border rounded-md p-2 mx-2 w-48"
+            required
           >
             <option value="DEFAULT" disabled>
               {' '}

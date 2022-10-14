@@ -1,5 +1,5 @@
-import { Html, Head, Main, NextScript } from 'next/document'
-import Script from 'next/script'
+import { Html, Head, Main, NextScript } from 'next/document';
+import Script from 'next/script';
 export default function Document() {
   return (
     <Html>
@@ -12,7 +12,7 @@ export default function Document() {
             let ffWidgetScript = document.createElement('script');
             ffWidgetScript.type = 'text/javascript';
             ffWidgetScript.src = 'https://freddyfeedback.com/widget/freddyfeedback.js';
-            document.head.appendChild(ffWidgetScript);`,
+            document.head.appendChild(ffWidgetScript);`
           }}
         />
       </Head>
@@ -21,5 +21,5 @@ export default function Document() {
         <NextScript />
       </body>
     </Html>
-  )
+  );
 }

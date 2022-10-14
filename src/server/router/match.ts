@@ -35,7 +35,12 @@ export const matchRouter = createRouter()
   })
   .query('getAll', {
     async resolve({ ctx }) {
-      return await ctx.prisma.match.findMany();
+      return await ctx.prisma.match.findMany({
+        orderBy: {
+          createdAt: 'desc'
+        },
+        take: 30
+      });
     }
   });
 
@@ -75,7 +80,13 @@ const calculateElo = async (input: any, ctx: any) => {
       id: input.p1
     },
     data: {
-      elo: playerOneNewElo
+      elo: playerOneNewElo,
+      matchesPlayed: {
+        increment: 1
+      },
+      matchesWon: {
+        increment: input.p1_score > input.p2_score ? 1 : 0
+      }
     }
   });
 
@@ -84,7 +95,13 @@ const calculateElo = async (input: any, ctx: any) => {
       id: input.p2
     },
     data: {
-      elo: playerTwoNewElo
+      elo: playerTwoNewElo,
+      matchesPlayed: {
+        increment: 1
+      },
+      matchesWon: {
+        increment: input.p2_score > input.p1_score ? 1 : 0
+      }
     }
   });
 };
