@@ -5,7 +5,7 @@ import { trpc } from '../../utils/trpc';
 import { useQueryClient } from 'react-query';
 import RightPointingArrow from '../shared/RightPointingArrow';
 
-interface FieldProps {
+interface PlayerSelectProps {
   label: 'One' | 'Two';
   name: string;
   setName: (name: string) => void;
@@ -72,7 +72,7 @@ const NewGameForm: FC = () => {
     setPlayerTwoId('');
   };
 
-  const Field: FC<FieldProps> = ({ label, name, setName }) => (
+  const PlayerSelect: FC<PlayerSelectProps> = ({ label, name, setName }) => (
     <div className="flex flex-col w-full">
       <label htmlFor={name} className="mb-1 text-xs text-slate-400">
         Player {label}
@@ -95,7 +95,13 @@ const NewGameForm: FC = () => {
             {users.data &&
               users.data.map((player) => {
                 return (
-                  <option key={player.id} value={player.id}>
+                  <option
+                    key={player.id}
+                    value={player.id}
+                    disabled={
+                      (label === 'Two' && player.id === playerOneId) || (label === 'One' && player.id === playerTwoId)
+                    }
+                  >
                     {player.name}
                   </option>
                 );
@@ -123,10 +129,10 @@ const NewGameForm: FC = () => {
       <h2 className="text-lg font-bold self-center mb-4">📝 &nbsp;New Game</h2>
       <div className="flex flex-row w-full gap-4">
         <div className="flex flex-row w-full">
-          <Field label="One" name={playerOneId} setName={setPlayerOneId} />
+          <PlayerSelect label="One" name={playerOneId} setName={setPlayerOneId} />
           <input
             className={clsx(
-              'border border-slate-300 text-gray-900 text-sm rounded-sm block w-12 py-1 px-1 ml-1 cursor-default self-end h-8',
+              'border border-slate-300 text-gray-900 text-sm rounded-sm block w-12 py-1 px-2 ml-1 cursor-default self-end h-8',
               errors.playerOneScore && 'border-red-500'
             )}
             type={'number'}
@@ -135,10 +141,10 @@ const NewGameForm: FC = () => {
           />
         </div>
         <div className="flex flex-row w-full">
-          <Field label="Two" name={playerTwoId} setName={setPlayerTwoId} />
+          <PlayerSelect label="Two" name={playerTwoId} setName={setPlayerTwoId} />
           <input
             className={clsx(
-              'border border-slate-300 text-gray-900 text-sm rounded-sm block w-12 py-1 px-1 ml-1 cursor-default self-end h-8',
+              'border border-slate-300 text-gray-900 text-sm rounded-sm block w-12 py-1 px-2 ml-1 cursor-default self-end h-8',
               errors.playerTwoScore && 'border-red-500'
             )}
             type={'number'}
@@ -154,7 +160,7 @@ const NewGameForm: FC = () => {
         <button
           type="button"
           onClick={() => submitGame()}
-          className="text-white focus:outline-none font-normal rounded-sm text-sm px-4 py-2 text-center inline-flex items-center bg-gradient-to-r from-gray-700 via-gray-900 to-black"
+          className="text-white focus:outline-none font-normal rounded-md text-sm px-4 py-2 text-center inline-flex items-center bg-gradient-to-r from-gray-700 via-gray-900 to-black"
         >
           Submit Results
           <RightPointingArrow />
