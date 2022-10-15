@@ -6,13 +6,14 @@ import { authOptions } from './api/auth/[...nextauth]';
 import { unstable_getServerSession } from 'next-auth';
 import { FC } from 'react';
 import { BuiltInProviderType } from 'next-auth/providers';
+import getWelcomeMessage from '../helpers/getWelcomeMessage';
 
 type ProviderList = Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null;
 type HomePage = NextPage<InferGetServerSidePropsType<typeof getServerSideProps>>;
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await unstable_getServerSession(req, res, authOptions);
-
+  const welcomeMessage = getWelcomeMessage();
   if (session) {
     return {
       redirect: {
@@ -25,11 +26,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const providers: ProviderList = await getProviders();
 
   return {
-    props: { providers }
+    props: { providers, welcomeMessage }
   };
 };
 
-const Home: HomePage = ({ providers }) => (
+const Home: HomePage = ({ providers, welcomeMessage }) => (
   <>
     <Head title={'Office Pong | Home'} />
     <main className="md:grid md:grid-cols-2">
@@ -37,7 +38,7 @@ const Home: HomePage = ({ providers }) => (
         <div className="fixed inset-0 bg-white bg-opacity-60 h-screen w-screen"></div>
         <div className="z-10">
           <h1 className="transition text-2xl md:text-3xl lg:text-3xl text-gray-700">🏓 Ping Pong Leaderboard</h1>
-          <p>Yep, it&apos;s finally done!</p>
+          <p>{welcomeMessage}</p>
           <div className="mt-8">
             <ProvidersList providers={providers} />
           </div>
