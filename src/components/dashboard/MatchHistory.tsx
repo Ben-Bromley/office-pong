@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { FC } from 'react';
 import { trpc } from '../../utils/trpc';
+import SkeletonLoader from '../shared/SkeletonLoader';
 
 const MatchHistory: FC = () => {
   const matches = trpc.useQuery(['match.getAll']);
@@ -19,6 +20,7 @@ const MatchHistory: FC = () => {
         <h2 className="text-md font-bold self-center mr-1">Score</h2>
       </div>
       <ul className="max-h-52 overflow-scroll">
+      {matches.status === 'loading' && <SkeletonLoader rows={3} />}
         {matches.data?.map((match) => (
           <li
             key={match.id}

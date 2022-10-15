@@ -3,7 +3,7 @@ import { trpc } from '../../utils/trpc';
 import CountUp from 'react-countup';
 import { useSession } from 'next-auth/react';
 import clsx from 'clsx';
-import LoadingSpinner from '../shared/LoadingSpinner';
+import SkeletonLoader from '../shared/SkeletonLoader';
 
 const Scoreboard: FC = () => {
   const scoreboard = trpc.useQuery(['user.scoreboard']);
@@ -22,7 +22,7 @@ const Scoreboard: FC = () => {
       </div>
 
       <ul className="max-h-[36rem] overflow-scroll relative">
-        {scoreboard.status === 'loading' && <LoadingSpinner />}
+        {scoreboard.status === 'loading' && <SkeletonLoader rows={3} />}
         {scoreboard.data?.map((player, idx) => (
           <li
             key={player.id}
