@@ -132,10 +132,11 @@ const NewGameForm: FC = () => {
           <PlayerSelect label="One" name={playerOneId} setName={setPlayerOneId} />
           <input
             className={clsx(
-              'border border-slate-300 text-gray-900 text-sm rounded-sm block w-12 py-1 px-2 ml-1 cursor-default self-end h-8',
-              errors.playerOneScore && 'border-red-500'
+              'border text-gray-900 text-sm rounded-sm block w-12 py-1 px-2 ml-1 cursor-default self-end h-8',
+              errors.playerOneScore ? 'border-red-500' : 'border-slate-300'
             )}
             type={'number'}
+            min={0}
             value={playerOneScore}
             onChange={(e) => setPlayerOneScore(parseInt(e.target.value))}
           />
@@ -144,10 +145,11 @@ const NewGameForm: FC = () => {
           <PlayerSelect label="Two" name={playerTwoId} setName={setPlayerTwoId} />
           <input
             className={clsx(
-              'border border-slate-300 text-gray-900 text-sm rounded-sm block w-12 py-1 px-2 ml-1 cursor-default self-end h-8',
-              errors.playerTwoScore && 'border-red-500'
+              'border text-gray-900 text-sm rounded-sm block w-12 py-1 px-2 ml-1 cursor-default self-end h-8',
+              errors.playerTwoScore ? 'border-red-500' : 'border-slate-300'
             )}
             type={'number'}
+            min={0}
             value={playerTwoScore}
             onChange={(e) => setPlayerTwoScore(parseInt(e.target.value))}
           />
