@@ -43,12 +43,16 @@ const NewGameForm: FC = () => {
         (!playerOneScore && !playerTwoScore) ||
         playerOneScore === playerTwoScore ||
         (playerOneScore < 11 && playerTwoScore < 11) ||
-        (playerOneScore >= 11 && playerTwoScore >= 11 && Math.abs(playerOneScore - playerTwoScore) > 2),
+        (((playerOneScore >= 11 && playerTwoScore >= 11) || playerOneScore > 11 || playerTwoScore > 11) &&
+          Math.abs(playerOneScore - playerTwoScore) > 2) ||
+        Math.abs(playerOneScore - playerTwoScore) < 2,
       playerTwoScore:
         (!playerOneScore && !playerTwoScore) ||
         playerOneScore === playerTwoScore ||
         (playerOneScore < 11 && playerTwoScore < 11) ||
-        (playerOneScore >= 11 && playerTwoScore >= 11 && Math.abs(playerOneScore - playerTwoScore) > 2)
+        (((playerOneScore >= 11 && playerTwoScore >= 11) || playerOneScore > 11 || playerTwoScore > 11) &&
+          Math.abs(playerOneScore - playerTwoScore) > 2) ||
+        Math.abs(playerOneScore - playerTwoScore) < 2
     };
 
     setErrors(localErrors);
