@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 // import components
-import LoadingSpinnerScreen from '../components/loadingSpinnerScreen';
+import LoadingSpinnerScreen from '../components/shared/LoadingSpinnerScreen';
 import Head from '../components/shared/Head';
 import Scoreboard from '../components/dashboard/Scoreboard';
 import NewGameForm from '../components/dashboard/NewGameForm';
