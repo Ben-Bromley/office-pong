@@ -32,12 +32,12 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
 const Home: HomePage = ({ providers, welcomeMessage }) => (
   <>
-    <Head title={'Office Pong | Home'} />
+    <Head title={'Office Table Tennis | Home'} />
     <main className="md:grid md:grid-cols-2">
       <section className="md:p-2 text-center h-screen flex flex-col justify-center align-center">
         <div className="fixed inset-0 bg-white bg-opacity-60 h-screen w-screen"></div>
         <div className="z-10">
-          <h1 className="transition text-2xl md:text-3xl lg:text-3xl text-gray-700">🏓 Ping Pong Leaderboard</h1>
+          <h1 className="transition text-2xl md:text-3xl lg:text-3xl text-gray-700">🏓 REVIEWS.io Table Tennis</h1>
           <p>{welcomeMessage}</p>
           <div className="mt-8">
             <ProvidersList providers={providers} />

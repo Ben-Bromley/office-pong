@@ -3,7 +3,7 @@ import { FC } from 'react';
 const LoadingSpinner: FC = () => {
   // spinner from https://loading.io/css/
   return (
-    <div role="status" className="w-full flex items-center justify-center">
+    <div role="status" className="w-full h-screen flex items-center justify-center">
       <span className="sr-only">Loading...</span>
       <div className="lds-roller">
         <div></div>
