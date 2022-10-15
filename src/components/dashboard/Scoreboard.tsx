@@ -40,7 +40,7 @@ const Scoreboard: FC = () => {
                 </p>
                 {player.id !== session?.user?.id && (
                   <div
-                    className="w-2 h-2 rounded-full bg-green-200 text-xs cursor-default self-center ml-2 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-red-100 via-red-100 to-yellow-100"
+                    className="w-2 h-2 rounded-full bg-green-200 text-xs cursor-default self-center ml-2 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-red-100  to-yellow-100"
                     onMouseEnter={() => setPlayerStatId(player.id)}
                     onMouseLeave={() => setPlayerStatId('')}
                   ></div>
@@ -51,7 +51,7 @@ const Scoreboard: FC = () => {
               <p
                 className={clsx(
                   'font-normal text-end px-1 rounded-md',
-                  idx === 0 && 'bg-gradient-to-tr from-yellow-100 via-yellow-300 to-yellow-100',
+                  idx === 0 && 'bg-gradient-to-tr from-yellow-300 via-yellow-200 to-yellow-300',
                   session?.user?.id === player.id && 'font-semibold'
                 )}
               >
@@ -60,7 +60,7 @@ const Scoreboard: FC = () => {
             </div>
             {playerStatId === player.id && (
               <div
-                className={clsx('absolute top-[2.98rem] left-0 w-full z-10 border border-gray-100 rounded-md bg-white')}
+                className={clsx('absolute top-[2.98rem] left-0 w-full z-50 border border-gray-100 rounded-md bg-white')}
               >
                 <StatsCard playerId={player.id} playerName={player.name ?? ''} />
               </div>

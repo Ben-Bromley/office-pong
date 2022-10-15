@@ -20,24 +20,40 @@ const MatchHistory: FC = () => {
         <h2 className="text-md font-bold self-center mr-1">Score</h2>
       </div>
       <ul className="max-h-52 overflow-scroll">
-      {matches.status === 'loading' && <SkeletonLoader rows={3} />}
+        {matches.status === 'loading' && <SkeletonLoader rows={3} />}
         {matches.data?.map((match) => (
           <li
             key={match.id}
             className={clsx('px-4 py-3 flex justify-between mb-0 border-b border-gray-100 rounded-sm')}
           >
             <div className="flex">
-              <p
+              <div
                 className={clsx(
-                  'font-normal',
-                  match.playerOneScore > match.playerTwoScore && 'border-green-400 border-b-2'
+                  'pb-0.5 rounded-none relative',
+                  match.playerOneScore > match.playerTwoScore && 'bg-gradient-to-bl from-emerald-300 to-emerald-400'
                 )}
               >
-                {match.playerOneScore > match.playerTwoScore && '🏅 '}
-                {playerName(match.playerOneId)}
-              </p>
+                <p className="font-normal bg-white justify-between ml-[-1px] mr-[-1px] mt-[-1px]">
+                  {match.playerOneScore > match.playerTwoScore && '🏅 '}
+                  {playerName(match.playerOneId)}
+                </p>
+              </div>
+
               <span className={clsx('px-2 self-center text-xs text-gray-400')}>vs.</span>
-              <p
+
+              <div
+                className={clsx(
+                  'pb-0.5 rounded-none relative',
+                  match.playerTwoScore > match.playerOneScore && 'bg-gradient-to-bl from-emerald-300 to-emerald-400'
+                )}
+              >
+                <p className="font-normal bg-white justify-between ml-[-1px] mr-[-1px] mt-[-1px]">
+                  {match.playerTwoScore > match.playerOneScore && '🏅 '}
+                  {playerName(match.playerTwoId)}
+                </p>
+              </div>
+
+              {/* <p
                 className={clsx(
                   'font-normal',
                   match.playerTwoScore > match.playerOneScore && 'border-green-400 border-b-2'
@@ -45,7 +61,7 @@ const MatchHistory: FC = () => {
               >
                 {match.playerTwoScore > match.playerOneScore && '🏅 '}
                 {playerName(match.playerTwoId)}
-              </p>
+              </p> */}
             </div>
             <div className="flex flex-row">
               <p className={clsx('font-normal text-end px-1 rounded-md')}>

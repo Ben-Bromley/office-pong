@@ -12,6 +12,14 @@ const StatsCard: FC<Props> = ({ playerId, playerName }) => {
   const { data: session } = useSession();
   const stats = trpc.useQuery(['user.stats', { id: playerId }]);
 
+  if (stats.status === 'loading') {
+    return (
+      <section className="bg-white m-2 p-4 rounded-md">
+        <SkeletonLoader rows={4} size={3} />
+      </section>
+    );
+  }
+
   return (
     <section className="bg-white m-2 p-4 rounded-md">
       <div className="flex flex-row justify-between mb-4">
@@ -34,7 +42,7 @@ const StatsCard: FC<Props> = ({ playerId, playerName }) => {
         </div>
 
         <div className="flex flex-row mb-2 text-sm w-full">
-          <p className="font-normal text-white px-1.5 rounded-md bg-gradient-to-bl from-blue-500 to-blue-600">
+          <p className="font-normal text-white px-1.5 rounded-md bg-gradient-to-bl from-blue-300 to-blue-400">
             {stats.data?.matchesPlayed
               ? Math.round(((stats.data?.matchesWon || 0) / stats.data?.matchesPlayed) * 100)
               : 0}
@@ -46,13 +54,13 @@ const StatsCard: FC<Props> = ({ playerId, playerName }) => {
 
       <div className="flex flex-row">
         <div className="flex flex-row mb-2 text-sm w-full">
-          <p className="font-normal text-white px-1.5 rounded-md bg-gradient-to-bl from-emerald-400 to-lime-500">
+          <p className="font-normal text-white px-1.5 rounded-md bg-gradient-to-bl from-emerald-300 to-emerald-400">
             {stats.data?.matchesWon || 0}
           </p>
           <p className="ml-2 font-normal">Games Won </p>
         </div>
         <div className="flex flex-row mb-2 text-sm w-full">
-          <p className="font-normal text-white px-1.5 rounded-md bg-gradient-to-bl from-red-400 to-red-500">
+          <p className="font-normal text-white px-1.5 rounded-md bg-gradient-to-bl from-red-300 to-red-400">
             {(stats.data?.matchesPlayed || 0) - (stats.data?.matchesWon || 0)}
           </p>
           <p className="ml-2 font-normal">Games Lost </p>
