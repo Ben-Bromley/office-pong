@@ -1,5 +1,4 @@
 import type { NextPage } from 'next';
-import { trpc } from '../utils/trpc';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -8,12 +7,11 @@ import LoadingSpinner from '../components/shared/LoadingSpinner';
 import Head from '../components/shared/Head';
 import Scoreboard from '../components/dashboard/Scoreboard';
 import NewGameForm from '../components/dashboard/NewGameForm';
-import Navigation from '../components/dashboard/Navigation';
+// import Navigation from '../components/dashboard/Navigation';
 import StatsCard from '../components/dashboard/StatsCard';
 import MatchHistory from '../components/dashboard/MatchHistory';
 
 const Dashboard: NextPage = () => {
-  const users = trpc.useQuery(['user.getAll']);
   const { data: session, status } = useSession();
   const router = useRouter();
 

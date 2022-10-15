@@ -11,10 +11,10 @@ interface PlayerSelectProps {
   setName: (name: string) => void;
 }
 
-interface ScoreProps {
-  score: number;
-  setScore: (score: number) => void;
-}
+// interface ScoreProps {
+//   score: number;
+//   setScore: (score: number) => void;
+// }
 
 const NewGameForm: FC = () => {
   const queryClient = useQueryClient();
