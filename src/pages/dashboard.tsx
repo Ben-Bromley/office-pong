@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 // import components
-import LoadingSpinnerScreen from '../components/shared/LoadingSpinnerScreen';
+import LoadingSpinner from '../components/shared/LoadingSpinner';
 import Head from '../components/shared/Head';
 import Scoreboard from '../components/dashboard/Scoreboard';
 import NewGameForm from '../components/dashboard/NewGameForm';
@@ -21,7 +21,7 @@ const Dashboard: NextPage = () => {
     if (status !== 'loading' && !session) router.push('/');
   }, [status, router, session]);
 
-  if (status == 'loading') return <LoadingSpinnerScreen />;
+  if (status == 'loading') return <LoadingSpinner />;
 
   if (status == 'authenticated') {
     return (
@@ -51,7 +51,7 @@ const Dashboard: NextPage = () => {
   // return nothing if not authenticated
   return (
     <>
-      <LoadingSpinnerScreen />
+      <LoadingSpinner />
     </>
   );
 };
