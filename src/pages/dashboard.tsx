@@ -35,7 +35,7 @@ const Dashboard: NextPage = () => {
             <section className="md:grid grid-cols-2 flex-grow">
               <Scoreboard />
               <div className="flex flex-col xl:md:lg:border-l xl:md:lg:ml-1 border-slate-200 xl:md:lg:pl-1">
-                <StatsCard />
+                <StatsCard playerId={session?.user?.id ?? ''} playerName={session?.user?.name ?? ''} />
                 <NewGameForm />
                 <MatchHistory />
               </div>
