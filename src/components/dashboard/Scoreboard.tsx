@@ -23,7 +23,7 @@ const Scoreboard: FC = () => {
         <h2 className="text-md font-bold self-center mr-1">ELO</h2>
       </div>
 
-      <ul className="max-h-[36rem] overflow-scroll relative">
+      <ul className="max-h-[36rem] overflow-y-scroll overflow-x-hidden relative">
         {scoreboard.status === 'loading' && <SkeletonLoader rows={3} />}
         {scoreboard.data?.map((player, idx) => (
           <li
