@@ -9,9 +9,9 @@ interface Props {
 const SkeletonLoader: FC<Props> = ({ rows, size }) => {
   return (
     <div>
-      {Array.from(Array(rows)).map((row) => (
+      {Array.from(Array(rows)).map((row, idx: number) => (
         <span
-          key={row}
+          key={idx}
           className={clsx(
             'block bg-gradient-to-r from-gray-100 to-gray-50 rounded-md px-4 mb-2 animate-pulse',
             size ? `py-${size}` : 'py-4'

@@ -12,6 +12,20 @@ export const matchRouter = createRouter()
     }),
     async resolve({ input, ctx }) {
       try {
+        // Get both players
+        const playerOne = await ctx.prisma.user.findUnique({
+          select: { elo: true },
+          where: {
+            id: input.p1
+          }
+        });
+        const playerTwo = await ctx.prisma.user.findUnique({
+          select: { elo: true },
+          where: {
+            id: input.p2
+          }
+        });
+
         // create user in db
         const user = await ctx.prisma.match.create({
           data: {
@@ -19,6 +33,8 @@ export const matchRouter = createRouter()
             playerOneScore: input.p1_score,
             playerTwoId: input.p2,
             playerTwoScore: input.p2_score,
+            playerOneElo: playerOne?.elo,
+            playerTwoElo: playerTwo?.elo,
             duration: '00:00'
           }
         });
