@@ -120,4 +120,5 @@ const calculateElo = async (input: any, ctx: any) => {
       }
     }
   });
+
 };
