@@ -49,7 +49,7 @@ const ScoreboardItem: FC<Props> = ({ player, idx }) => {
             session?.user?.id === player.id && 'font-semibold'
           )}
         >
-          {idx === 0 ? <CountUp end={player.elo} duration={1.2} /> : player.elo}
+          {idx === 0 ? <CountUp end={player.elo} duration={0.9} /> : player.elo}
         </p>
       </div>
       {playerStatId === player.id && (

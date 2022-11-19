@@ -15,7 +15,7 @@ const MatchHistory: FC = () => {
 
   return (
     <SectionCard>
-      <SectionTitle title="📅 &nbsp;Match History" />
+      <SectionTitle title="🗒 &nbsp;Match History" />
       <div className="w-full px-4 py-2 rounded-md flex flex-row justify-between mb-1 bg-gradient-to-b from-[#fAfCfE] to-slate-50">
         <div className="flex">
           <p className="font-semibold">Players</p>
