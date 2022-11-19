@@ -1,7 +1,9 @@
 import { FC } from 'react';
 import { signOut, useSession } from 'next-auth/react';
-import { trpc } from '../../utils/trpc';
-import SkeletonLoader from '../shared/SkeletonLoader';
+import { trpc } from '../../../utils/trpc';
+import SkeletonLoader from '../../shared/SkeletonLoader';
+import SectionTitle from '../../shared/SectionTitle';
+import Insights from './Insights';
 
 interface Props {
   playerId: string;
@@ -21,12 +23,12 @@ const StatsCard: FC<Props> = ({ playerId, playerName }) => {
   }
 
   return (
-    <section className="bg-white m-2 p-4 rounded-md">
-      <div className="flex flex-row justify-between mb-4">
-        <h2 className="text-lg font-bold self-center w-full">📈 &nbsp;{playerName.split(' ')[0] ?? ''} - Stats</h2>
+    <section className="bg-white m-2 p-4 rounded-md shadow-sm">
+      <div className="flex flex-row justify-between">
+        <SectionTitle title={<>📈 &nbsp;{playerName.split(' ')[0] ?? ''} - Stats</>} />
         {session?.user?.id === playerId && (
           <div className="flex flex-row text-end w-full justify-end">
-            <a className="text-sm font-normal text-blue-500 cursor-pointer" onClick={() => signOut()}>
+            <a className="text-sm font-normal text-gray-400 cursor-pointer" onClick={() => signOut()}>
               Sign Out
             </a>
           </div>
@@ -66,19 +68,9 @@ const StatsCard: FC<Props> = ({ playerId, playerName }) => {
           <p className="ml-2 font-normal">Games Lost </p>
         </div>
       </div>
-      {stats.data?.fearedOpponent && (
-        <>
-          <div className="border-b border-slate-100 my-4" />
-          <div className="flex flex-row text-sm items-center">
-            <div className="bg-gradient-to-r from-gray-700 via-gray-900 to-black pb-0.5 rounded-none relative">
-              <p className="font-normal bg-white justify-between ml-[-1px] mr-[-1px] mt-[-1px]">
-                {stats.data?.fearedOpponent}
-              </p>
-            </div>
-            <p className="ml-2 font-normal">- Toughest opponent</p>
-          </div>
-        </>
-      )}
+
+      <div className="border-b border-slate-100 my-3.5" />
+      <Insights playerId={playerId} />
     </section>
   );
 };

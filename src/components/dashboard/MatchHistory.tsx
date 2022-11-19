@@ -1,7 +1,10 @@
 import clsx from 'clsx';
 import { FC } from 'react';
 import { trpc } from '../../utils/trpc';
+import { Info } from 'lucide-react';
+import SectionTitle from '../shared/SectionTitle';
 import SkeletonLoader from '../shared/SkeletonLoader';
+import Tooltip from '../shared/Tooltip';
 
 const MatchHistory: FC = () => {
   const matches = trpc.useQuery(['match.getAll']);
@@ -10,11 +13,10 @@ const MatchHistory: FC = () => {
   const playerName = (id: string) => users.data?.find((u) => u.id === id)?.name;
 
   return (
-    <section className="bg-white m-2 p-4 rounded-md">
-      <h2 className="text-lg font-bold self-center w-full mb-4">🗒 &nbsp;Match History</h2>
-      <div className="w-full px-4 py-2 bg-slate-50 rounded-md flex flex-row justify-between mb-2">
+    <section className="bg-white m-2 p-4 rounded-md shadow-sm">
+      <SectionTitle title="📅 &nbsp;Match History" />
+      <div className="w-full px-4 py-2 bg-slate-50 rounded-md flex flex-row justify-between mb-1.5">
         <div className="flex">
-          {/* <span className={clsx('mr-2 self-center w-4 text-center text-sm font-bold')}>#</span> */}
           <p className="font-semibold">Players</p>
         </div>
         <h2 className="text-md font-bold self-center mr-1">Score</h2>
@@ -52,21 +54,20 @@ const MatchHistory: FC = () => {
                   {playerName(match.playerTwoId)}
                 </p>
               </div>
-
-              {/* <p
-                className={clsx(
-                  'font-normal',
-                  match.playerTwoScore > match.playerOneScore && 'border-green-400 border-b-2'
-                )}
-              >
-                {match.playerTwoScore > match.playerOneScore && '🏅 '}
-                {playerName(match.playerTwoId)}
-              </p> */}
             </div>
             <div className="flex flex-row">
               <p className={clsx('font-normal text-end px-1 rounded-md')}>
                 {match.playerOneScore} - {match.playerTwoScore}
               </p>
+              <Tooltip
+                className="w-3 h-3 self-center"
+                content={`${new Date(match.createdAt).toDateString()} - ${new Date(
+                  match.createdAt
+                ).toLocaleTimeString()}`}
+                contentClassName="-left-[10.8rem] -top-2.5 w-[10.5rem]"
+              >
+                <Info className="w-full h-full" />
+              </Tooltip>
             </div>
           </li>
         ))}
