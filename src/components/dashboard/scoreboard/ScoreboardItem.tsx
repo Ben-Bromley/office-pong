@@ -24,7 +24,7 @@ const ScoreboardItem: FC<Props> = ({ player, idx }) => {
   return (
     <li key={player.id} className={clsx('px-4 py-2.5 flex justify-between mb-0 border-b border-gray-100  relative')}>
       <div className="flex">
-        <span className={clsx('mr-2 self-center w-4 text-center', idx === 0 ? 'text-md' : 'text-xs')}>
+        <span className={clsx('mr-2 self-center w-4 text-center font-light', idx === 0 ? 'text-md' : 'text-xs')}>
           {idx === 0 ? '🏆' : `#${idx + 1}`}
         </span>
         <div className="flex flex-row">
@@ -54,7 +54,7 @@ const ScoreboardItem: FC<Props> = ({ player, idx }) => {
       </div>
       {playerStatId === player.id && (
         <div
-          className={clsx('absolute top-[2.7rem] left-0 w-full z-50 border border-gray-100 rounded-md bg-white')}
+          className={clsx('absolute left-0 w-full z-50 shadow-2xl bg-black bg-opacity-60 rounded-md')}
           onMouseEnter={() => setPlayerStatId(player.id)}
           onMouseLeave={() => setPlayerStatId(null)}
         >

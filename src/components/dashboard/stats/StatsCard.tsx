@@ -5,6 +5,7 @@ import SkeletonLoader from '../../shared/SkeletonLoader';
 import SectionTitle from '../../shared/SectionTitle';
 import Insights from './Insights';
 import SectionCard from '../../shared/SectionCard';
+import { LogOut } from 'lucide-react';
 
 interface Props {
   playerId: string;
@@ -29,8 +30,8 @@ const StatsCard: FC<Props> = ({ playerId, playerName }) => {
         <SectionTitle title={<>📈 &nbsp;{playerName.split(' ')[0] ?? ''} - Stats</>} />
         {session?.user?.id === playerId && (
           <div className="flex flex-row text-end w-full justify-end">
-            <a className="text-sm font-normal text-gray-400 cursor-pointer" onClick={() => signOut()}>
-              Sign Out
+            <a className="text-xs font-normal text-blue-400 cursor-pointer" title="Sign out" onClick={() => signOut()}>
+              <LogOut className="w-4 h-4 self-center" />
             </a>
           </div>
         )}
@@ -38,14 +39,14 @@ const StatsCard: FC<Props> = ({ playerId, playerName }) => {
 
       <div className="flex flex-row">
         <div className="flex flex-row mb-2 text-sm w-full">
-          <p className="font-normal text-white rounded-md px-1.5 bg-gradient-to-bl from-indigo-300 to-purple-400">
+          <p className="font-normal text-white rounded-md px-1.5 bg-gradient-to-bl from-indigo-400 to-purple-500 self-center">
             {stats.data?.matchesPlayed || 0}
           </p>
           <p className="ml-2 font-normal">Total Games Played</p>
         </div>
 
         <div className="flex flex-row mb-2 text-sm w-full">
-          <p className="font-normal text-white px-1.5 rounded-md bg-gradient-to-bl from-blue-300 to-blue-400">
+          <p className="font-normal text-white px-1.5 rounded-md bg-gradient-to-bl from-sky-400 to-blue-500 self-center">
             {stats.data?.matchesPlayed
               ? Math.round(((stats.data?.matchesWon || 0) / stats.data?.matchesPlayed) * 100)
               : 0}
@@ -57,13 +58,13 @@ const StatsCard: FC<Props> = ({ playerId, playerName }) => {
 
       <div className="flex flex-row">
         <div className="flex flex-row mb-2 text-sm w-full">
-          <p className="font-normal text-white px-1.5 rounded-md bg-gradient-to-bl from-emerald-300 to-emerald-400">
+          <p className="font-normal text-white px-1.5 rounded-md bg-gradient-to-bl from-emerald-400 to-emerald-500 self-center">
             {stats.data?.matchesWon || 0}
           </p>
           <p className="ml-2 font-normal">Games Won </p>
         </div>
         <div className="flex flex-row mb-2 text-sm w-full">
-          <p className="font-normal text-white px-1.5 rounded-md bg-gradient-to-bl from-red-300 to-red-400">
+          <p className="font-normal text-white px-1.5 rounded-md bg-gradient-to-bl from-red-400 to-red-500 self-center">
             {(stats.data?.matchesPlayed || 0) - (stats.data?.matchesWon || 0)}
           </p>
           <p className="ml-2 font-normal">Games Lost </p>

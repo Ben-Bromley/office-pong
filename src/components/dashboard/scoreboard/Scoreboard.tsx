@@ -14,7 +14,7 @@ const Scoreboard: FC = () => {
   return (
     <SectionCard>
       <SectionTitle title="🏓 &nbsp;Scoreboard" />
-      <div className="w-full px-4 py-2 bg-slate-50 rounded-md flex flex-row justify-between mb-1.5">
+      <div className="w-full px-4 py-2 rounded-md flex flex-row justify-between mb-1 bg-gradient-to-b from-[#fAfCfE] to-slate-50">
         <div className="flex">
           <span className={clsx('mr-2 self-center w-4 text-center text-sm font-bold')}>#</span>
           <p className="mx-2 font-semibold">Name</p>

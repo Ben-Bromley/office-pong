@@ -16,7 +16,7 @@ const MatchHistory: FC = () => {
   return (
     <SectionCard>
       <SectionTitle title="📅 &nbsp;Match History" />
-      <div className="w-full px-4 py-2 bg-slate-50 rounded-md flex flex-row justify-between mb-1.5">
+      <div className="w-full px-4 py-2 rounded-md flex flex-row justify-between mb-1 bg-gradient-to-b from-[#fAfCfE] to-slate-50">
         <div className="flex">
           <p className="font-semibold">Players</p>
         </div>
@@ -42,7 +42,7 @@ const MatchHistory: FC = () => {
                 </p>
               </div>
 
-              <span className={clsx('px-2 self-center text-xs text-gray-400')}>vs.</span>
+              <span className={clsx('px-2 self-center text-xs text-gray-400 font-light')}>vs.</span>
 
               <div
                 className={clsx(

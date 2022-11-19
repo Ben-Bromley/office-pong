@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { AlertTriangle, BarChart, BarChart3, ChevronLeft, ChevronRight, Triangle, Trophy } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { FC, useState } from 'react';
 import { trpc } from '../../../utils/trpc';
@@ -20,12 +20,8 @@ const Insights: FC<Props> = ({ playerId }) => {
   const MostLosses = () => (
     <>
       <div className="flex flex-row text-sm items-center">
-        <div className="bg-gradient-to-r from-gray-700 via-gray-900 to-black pb-0.5 rounded-none relative">
-          <p className="font-normal bg-white justify-between ml-[-1px] mr-[-1px] mt-[-1px]">
-            {insights.data?.mostLossUser?.name}
-          </p>
-        </div>
-        <p className="ml-2 font-normal">- Lost to the most</p>
+        <AlertTriangle className="w-4 h-4 text-red-500" />
+        <p className="ml-2 font-normal"> Most losses to {insights.data?.mostLossUser?.name}!</p>
       </div>
     </>
   );
@@ -33,33 +29,30 @@ const Insights: FC<Props> = ({ playerId }) => {
   const MostWins = () => (
     <>
       <div className="flex flex-row text-sm items-center">
-        <div className="bg-gradient-to-r from-gray-700 via-gray-900 to-black pb-0.5 rounded-none relative">
-          <p className="font-normal bg-white justify-between ml-[-1px] mr-[-1px] mt-[-1px]">
-            {insights.data?.mostWinUser?.name}
-          </p>
-        </div>
-        <p className="ml-2 font-normal">- Most beaten</p>
+        <Trophy className="w-4 h-4 text-amber-500" />
+        <p className="ml-2 font-normal"> Most wins against {insights.data?.mostWinUser?.name}!</p>
       </div>
     </>
   );
 
   const EloChange = () => (
     <>
-      <div className="flex flex-row text-sm items-center">
-        {insights?.data?.eloChange !== null ? (
-          <>
-            <div className="bg-gradient-to-r from-gray-700 via-gray-900 to-black pb-0.5 rounded-none relative">
-              <p className="font-normal bg-white justify-between ml-[-1px] mr-[-1px] mt-[-1px]">
-                {insights.data?.eloChange ?? 0 > 0 ? '+' : ''}
-                {insights.data?.eloChange}
-              </p>
-            </div>
-            <p className="ml-2 font-normal">- Your ELO change since 5 games ago</p>
-          </>
-        ) : (
-          <p className="font-normal">Not enough games played to calculate ELO change</p>
-        )}
-      </div>
+      {insights?.data?.eloChange !== null ? (
+        <div className="flex flex-row text-sm items-center">
+          <BarChart3 className={clsx('w-4 h-4', insights.data!.eloChange > 0 ? 'text-sky-600' : 'text-sky-600')} />
+          <p className="ml-2 font-normal">
+            {' '}
+            ELO has {insights.data!.eloChange > 0 ? 'risen' : 'fallen'} by{' '}
+            {insights.data?.eloChange ?? 0 > 0 ? '+' : ''}
+            {insights.data?.eloChange} since 5 games ago!
+          </p>
+        </div>
+      ) : (
+        <div className="flex flex-row text-sm items-center">
+          <BarChart3 className="w-4 h-4 text-gray-500" />
+          <p className="ml-2 font-normal"> Play at least 5 games to show your ELO change</p>
+        </div>
+      )}
     </>
   );
 
@@ -70,18 +63,16 @@ const Insights: FC<Props> = ({ playerId }) => {
         {idx === 1 && <MostWins />}
         {idx === 2 && <EloChange />}
       </div>
-      {playerId === session?.user?.id && (
-        <div className="flex flex-row justify-between self-end">
-          <ChevronLeft
-            className={clsx('cursor-pointer text-gray-400', idx === 0 && 'opacity-10')}
-            onClick={() => idx !== 0 && setIdx((i: number) => i - 1)}
-          />
-          <ChevronRight
-            className={clsx('cursor-pointer text-gray-400', idx === 2 && 'opacity-10')}
-            onClick={() => idx !== 2 && setIdx((i: number) => i + 1)}
-          />
-        </div>
-      )}
+      <div className="flex flex-row justify-between self-end">
+        <ChevronLeft
+          className={clsx('cursor-pointer text-gray-300', idx === 0 && 'opacity-20 cursor-auto')}
+          onClick={() => idx !== 0 && setIdx((i: number) => i - 1)}
+        />
+        <ChevronRight
+          className={clsx('cursor-pointer text-gray-300', idx === 2 && 'opacity-20 cursor-auto')}
+          onClick={() => idx !== 2 && setIdx((i: number) => i + 1)}
+        />
+      </div>
     </div>
   );
 };
