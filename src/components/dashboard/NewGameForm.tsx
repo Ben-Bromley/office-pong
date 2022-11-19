@@ -5,6 +5,7 @@ import { trpc } from '../../utils/trpc';
 import { useQueryClient } from 'react-query';
 import SectionTitle from '../shared/SectionTitle';
 import { ArrowRightCircle, ChevronDown, RotateCw } from 'lucide-react';
+import SectionCard from '../shared/SectionCard';
 
 interface PlayerSelectProps {
   label: 'One' | 'Two';
@@ -132,7 +133,7 @@ const NewGameForm: FC = () => {
   );
 
   return (
-    <section className="bg-white m-2 p-4 rounded-md shadow-sm">
+    <SectionCard>
       <SectionTitle title="📝 &nbsp;New Game" />
       <div className="flex flex-row w-full gap-4">
         <div className="flex flex-row w-full">
@@ -187,7 +188,7 @@ const NewGameForm: FC = () => {
           )}
         </button>
       </div>
-    </section>
+    </SectionCard>
   );
 };
 

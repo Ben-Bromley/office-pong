@@ -4,6 +4,7 @@ import { trpc } from '../../../utils/trpc';
 import SkeletonLoader from '../../shared/SkeletonLoader';
 import SectionTitle from '../../shared/SectionTitle';
 import Insights from './Insights';
+import SectionCard from '../../shared/SectionCard';
 
 interface Props {
   playerId: string;
@@ -23,7 +24,7 @@ const StatsCard: FC<Props> = ({ playerId, playerName }) => {
   }
 
   return (
-    <section className="bg-white m-2 p-4 rounded-md shadow-sm">
+    <SectionCard>
       <div className="flex flex-row justify-between">
         <SectionTitle title={<>📈 &nbsp;{playerName.split(' ')[0] ?? ''} - Stats</>} />
         {session?.user?.id === playerId && (
@@ -71,7 +72,7 @@ const StatsCard: FC<Props> = ({ playerId, playerName }) => {
 
       <div className="border-b border-slate-100 my-3.5" />
       <Insights playerId={playerId} />
-    </section>
+    </SectionCard>
   );
 };
 

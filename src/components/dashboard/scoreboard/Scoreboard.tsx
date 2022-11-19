@@ -6,12 +6,13 @@ import Tooltip from '../../shared/Tooltip';
 import ScoreboardItem from './ScoreboardItem';
 import SectionTitle from '../../shared/SectionTitle';
 import { Info } from 'lucide-react';
+import SectionCard from '../../shared/SectionCard';
 
 const Scoreboard: FC = () => {
   const scoreboard = trpc.useQuery(['user.scoreboard']);
 
   return (
-    <section className="bg-white m-2 p-4 rounded-md shadow-sm">
+    <SectionCard>
       <SectionTitle title="🏓 &nbsp;Scoreboard" />
       <div className="w-full px-4 py-2 bg-slate-50 rounded-md flex flex-row justify-between mb-1.5">
         <div className="flex">
@@ -36,7 +37,7 @@ const Scoreboard: FC = () => {
           <ScoreboardItem key={player.id} idx={idx} player={player} />
         ))}
       </ul>
-    </section>
+    </SectionCard>
   );
 };
 

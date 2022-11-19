@@ -5,6 +5,7 @@ import { Info } from 'lucide-react';
 import SectionTitle from '../shared/SectionTitle';
 import SkeletonLoader from '../shared/SkeletonLoader';
 import Tooltip from '../shared/Tooltip';
+import SectionCard from '../shared/SectionCard';
 
 const MatchHistory: FC = () => {
   const matches = trpc.useQuery(['match.getAll']);
@@ -13,7 +14,7 @@ const MatchHistory: FC = () => {
   const playerName = (id: string) => users.data?.find((u) => u.id === id)?.name;
 
   return (
-    <section className="bg-white m-2 p-4 rounded-md shadow-sm">
+    <SectionCard>
       <SectionTitle title="📅 &nbsp;Match History" />
       <div className="w-full px-4 py-2 bg-slate-50 rounded-md flex flex-row justify-between mb-1.5">
         <div className="flex">
@@ -72,7 +73,7 @@ const MatchHistory: FC = () => {
           </li>
         ))}
       </ul>
-    </section>
+    </SectionCard>
   );
 };
 

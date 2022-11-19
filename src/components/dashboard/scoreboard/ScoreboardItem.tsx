@@ -22,10 +22,7 @@ const ScoreboardItem: FC<Props> = ({ player, idx }) => {
   const [playerStatId, setPlayerStatId] = useState<string | null>(null);
 
   return (
-    <li
-      key={player.id}
-      className={clsx('px-4 py-2.5 flex justify-between mb-0 border-b border-gray-100 rounded-sm relative')}
-    >
+    <li key={player.id} className={clsx('px-4 py-2.5 flex justify-between mb-0 border-b border-gray-100  relative')}>
       <div className="flex">
         <span className={clsx('mr-2 self-center w-4 text-center', idx === 0 ? 'text-md' : 'text-xs')}>
           {idx === 0 ? '🏆' : `#${idx + 1}`}
@@ -47,7 +44,8 @@ const ScoreboardItem: FC<Props> = ({ player, idx }) => {
         <p
           className={clsx(
             'font-normal text-end px-1 rounded-md',
-            idx === 0 && 'animate-text bg-gradient-to-r from-yellow-400 via-amber-200 to-yellow-400 ',
+            idx === 0 &&
+              'animate-gradient bg-gradient-to-br from-yellow-500 via-amber-200 to-yellow-400 shadow-sm shadow-yellow-100',
             session?.user?.id === player.id && 'font-semibold'
           )}
         >

@@ -8,10 +8,10 @@ module.exports = {
         'banner-polka': "url('/images/banner-polka.svg')"
       },
       animation: {
-        text: 'text 2.5s ease infinite'
+        gradient: 'gradient 2.4s ease-out infinite;'
       },
       keyframes: {
-        text: {
+        gradient: {
           '0%, 100%': {
             'background-size': '200% 200%',
             'background-position': 'left center'
