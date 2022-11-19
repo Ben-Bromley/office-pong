@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { FC } from 'react';
 
 interface Props {
-  children: JSX.Element | JSX.Element[];
+  children: any;
   className?: string;
 }
 

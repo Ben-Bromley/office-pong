@@ -58,6 +58,49 @@ export const matchRouter = createRouter()
         take: 30
       });
     }
+  })
+  .query('userMatches', {
+    input: z.object({
+      id: z.string().nullable()
+    }),
+    async resolve({ input, ctx }) {
+      if (!input.id) return;
+
+      const matches = await ctx.prisma.match.findMany({
+        where: {
+          OR: [
+            {
+              playerOneId: input.id
+            },
+            {
+              playerTwoId: input.id
+            }
+          ],
+          AND: [
+            {
+              playerOneElo: {
+                not: -1
+              }
+            }
+          ]
+        }
+      });
+
+      // return a list of matches with the user's elo
+      return matches.map((match) => {
+        if (match.playerOneId === input.id) {
+          return {
+            ...match,
+            userElo: match.playerOneElo
+          };
+        } else {
+          return {
+            ...match,
+            userElo: match.playerTwoElo
+          };
+        }
+      });
+    }
   });
 
 const calculateElo = async (input: any, ctx: any) => {
@@ -120,5 +163,4 @@ const calculateElo = async (input: any, ctx: any) => {
       }
     }
   });
-
 };

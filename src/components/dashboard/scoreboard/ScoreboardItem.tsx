@@ -33,7 +33,7 @@ const ScoreboardItem: FC<Props> = ({ player, idx }) => {
           </p>
           {player.id !== session?.user?.id && (
             <div
-              className="w-2 h-2 rounded-full bg-sky-200 text-xs cursor-default self-center ml-2 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-sky-100  to-blue-100"
+              className="w-2 h-2 rounded-full bg-sky-200 text-xs cursor-default self-center ml-2 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-gray-200  to-blue-100"
               onMouseEnter={() => setPlayerStatId(player.id)}
               onMouseLeave={() => setPlayerStatId(null)}
             />

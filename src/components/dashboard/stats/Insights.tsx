@@ -20,8 +20,11 @@ const Insights: FC<Props> = ({ playerId }) => {
   const MostLosses = () => (
     <>
       <div className="flex flex-row text-sm items-center">
-        <AlertTriangle className="w-4 h-4 text-red-500" />
-        <p className="ml-2 font-normal"> Most losses to {insights.data?.mostLossUser?.name}!</p>
+        <AlertTriangle className="w-4 h-4 text-red-600" />
+        <p className="ml-2 font-normal">
+          {' '}
+          Most losses to {insights.data?.mostLossUser?.name ?? '(not configured yet?)'}!
+        </p>
       </div>
     </>
   );
@@ -30,7 +33,10 @@ const Insights: FC<Props> = ({ playerId }) => {
     <>
       <div className="flex flex-row text-sm items-center">
         <Trophy className="w-4 h-4 text-amber-500" />
-        <p className="ml-2 font-normal"> Most wins against {insights.data?.mostWinUser?.name}!</p>
+        <p className="ml-2 font-normal">
+          {' '}
+          Most wins against {insights.data?.mostWinUser?.name ?? '(not configured yet?)'}!
+        </p>
       </div>
     </>
   );
@@ -39,11 +45,11 @@ const Insights: FC<Props> = ({ playerId }) => {
     <>
       {insights?.data?.eloChange !== null ? (
         <div className="flex flex-row text-sm items-center">
-          <BarChart3 className={clsx('w-4 h-4', insights.data!.eloChange > 0 ? 'text-sky-600' : 'text-sky-600')} />
+          <BarChart3 className={clsx('w-4 h-4', insights.data!.eloChange > 0 ? 'text-sky-600' : 'text-red-600')} />
           <p className="ml-2 font-normal">
             {' '}
             ELO has {insights.data!.eloChange > 0 ? 'risen' : 'fallen'} by{' '}
-            {insights.data?.eloChange ?? 0 > 0 ? '+' : ''}
+            {(insights.data?.eloChange ?? 0) > 0 ? '+' : ''}
             {insights.data?.eloChange} since 5 games ago!
           </p>
         </div>

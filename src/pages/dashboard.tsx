@@ -7,7 +7,7 @@ import Head from '../components/shared/Head';
 import Scoreboard from '../components/dashboard/scoreboard/Scoreboard';
 import NewGameForm from '../components/dashboard/NewGameForm';
 import StatsCard from '../components/dashboard/stats/StatsCard';
-import MatchHistory from '../components/dashboard/MatchHistory';
+import MatchHistory from '../components/dashboard/history/MatchHistory';
 
 const Dashboard: NextPage = () => {
   const { data: session, status } = useSession();
