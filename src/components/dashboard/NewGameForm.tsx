@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
-import { FC, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { trpc } from '../../utils/trpc';
 import { useQueryClient } from 'react-query';
 import SectionTitle from '../shared/SectionTitle';
@@ -26,8 +26,10 @@ const NewGameForm: FC = () => {
   const [playerOneId, setPlayerOneId] = useState(session?.user?.id ?? '');
   const [playerTwoId, setPlayerTwoId] = useState('');
 
-  const [playerOneScore, setPlayerOneScore] = useState(0);
-  const [playerTwoScore, setPlayerTwoScore] = useState(0);
+  const playerOneInputRef = useRef<HTMLInputElement>(null);
+  const playerTwoInputRef = useRef<HTMLInputElement>(null);
+  const [playerOneScore, setPlayerOneScore] = useState<number>(0);
+  const [playerTwoScore, setPlayerTwoScore] = useState<number>(0);
 
   const [errors, setErrors] = useState({
     playerOneId: false,
@@ -63,7 +65,7 @@ const NewGameForm: FC = () => {
   const submitGame = () => {
     if (!validateFields()) return;
     match.mutate(
-      { p1: playerOneId, p2: playerTwoId, p1_score: playerOneScore, p2_score: playerTwoScore },
+      { p1: playerOneId, p2: playerTwoId, p1_score: playerOneScore!, p2_score: playerTwoScore! },
       {
         onSuccess: () => {
           queryClient.invalidateQueries(['match.getAll']);
@@ -88,7 +90,12 @@ const NewGameForm: FC = () => {
           <select
             id={name}
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {
+              label === 'One'
+                ? playerOneInputRef.current?.value === '0' && playerOneInputRef.current?.focus()
+                : playerTwoInputRef.current?.value === '0' && playerTwoInputRef.current?.focus();
+              setName(e.target.value);
+            }}
             disabled={match.isLoading}
             className={clsx(
               'border  text-sm rounded-sm block w-full py-1 h-8 px-2 appearance-none',
@@ -137,6 +144,7 @@ const NewGameForm: FC = () => {
             )}
             type={'number'}
             min={0}
+            ref={playerOneInputRef}
             value={playerOneScore}
             disabled={match.isLoading}
             onChange={(e) => setPlayerOneScore(parseInt(e.target.value))}
@@ -151,6 +159,7 @@ const NewGameForm: FC = () => {
             )}
             type={'number'}
             min={0}
+            ref={playerTwoInputRef}
             value={playerTwoScore}
             disabled={match.isLoading}
             onChange={(e) => setPlayerTwoScore(parseInt(e.target.value))}
