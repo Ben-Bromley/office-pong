@@ -1,10 +1,12 @@
 import { Match } from '@prisma/client';
 import { FC, useMemo } from 'react';
-import { LineChart, Line, ResponsiveContainer, XAxis, Tooltip, YAxis, CartesianGrid } from 'recharts';
+import { LineChart, Line, ResponsiveContainer, XAxis, Tooltip, YAxis, CartesianGrid, TooltipProps } from 'recharts';
 
 interface Props {
   data: Match[] | undefined;
 }
+
+const roundTen = (num: number) => Math.round(num / 10) * 10;
 
 const ELOChart: FC<Props> = ({ data }) => {
   return (
@@ -15,13 +17,25 @@ const ELOChart: FC<Props> = ({ data }) => {
         <XAxis tick={false} />
         <YAxis
           tickCount={15}
-          // Slate 400
           tick={{ fill: '#000000' }}
-          domain={[(dataMin: number) => dataMin - 25, (dataMax: number) => dataMax + 25]}
+          domain={[(dataMin: number) => roundTen(dataMin) - 10, (dataMax: number) => roundTen(dataMax) + 10]}
         />
-        <Tooltip labelFormatter={() => 'ELO'} />
+        <Tooltip
+          labelFormatter={() => 'ELO'}
+          cursor={false}
+          content={tooltipContent}
+          wrapperStyle={{ outline: 'none' }}
+        />
       </LineChart>
     </ResponsiveContainer>
+  );
+};
+
+const tooltipContent: FC = (tooltipProps: any) => {
+  return (
+    <div className="z-100 bg-black text-white rounded-md p-2">
+      <p className="text-xs">ELO: {tooltipProps?.payload?.[0]?.payload?.userElo ?? 'Unknown'}</p>
+    </div>
   );
 };
 

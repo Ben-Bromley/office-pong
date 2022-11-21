@@ -160,9 +160,17 @@ export const userRouter = createRouter()
       if (last5matches.length === 5) {
         const match5Elo =
           last5matches[0]!.playerOneId === input.id ? last5matches[0]!.playerOneElo : last5matches[0]!.playerTwoElo;
-        const lastMatchElo =
-          last5matches[4]!.playerOneId === input.id ? last5matches[4]!.playerOneElo : last5matches[4]!.playerTwoElo;
-        eloChange = lastMatchElo - match5Elo;
+
+        const player = await ctx.prisma.user.findFirst({
+          select: {
+            elo: true
+          },
+          where: {
+            id: input.id
+          }
+        });
+
+        eloChange = (player?.elo || 0) - match5Elo;
       }
 
       return {
