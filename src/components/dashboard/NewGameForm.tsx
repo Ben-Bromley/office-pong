@@ -70,6 +70,7 @@ const NewGameForm: FC = () => {
       {
         onSuccess: () => {
           queryClient.invalidateQueries(['match.getAll']);
+          queryClient.invalidateQueries(['match.userMatches']);
           queryClient.invalidateQueries(['user.scoreboard']);
           queryClient.invalidateQueries(['user.stats']);
           queryClient.invalidateQueries(['user.insights']);
@@ -107,20 +108,23 @@ const NewGameForm: FC = () => {
             <option value="" disabled>
               Select Player
             </option>
+            {/* sort by name */}
             {users.data &&
-              users.data.map((player) => {
-                return (
-                  <option
-                    key={player.id}
-                    value={player.id}
-                    disabled={
-                      (label === 'Two' && player.id === playerOneId) || (label === 'One' && player.id === playerTwoId)
-                    }
-                  >
-                    {player.name}
-                  </option>
-                );
-              })}
+              users.data
+                .sort((a, b) => (a.name ?? '').localeCompare(b.name ?? ''))
+                .map((player) => {
+                  return (
+                    <option
+                      key={player.id}
+                      value={player.id}
+                      disabled={
+                        (label === 'Two' && player.id === playerOneId) || (label === 'One' && player.id === playerTwoId)
+                      }
+                    >
+                      {player.name}
+                    </option>
+                  );
+                })}
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1">
             <ChevronDown

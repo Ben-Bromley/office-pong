@@ -50,6 +50,9 @@ const MatchHistory: FC = () => {
 
       {screen === 'elo' && (
         <div className="w-full h-64">
+          {/* <select className="w-full h-10 px-2 rounded-md bg-slate-50">
+            <option value="all">All Players</option>
+          </select> */}
           <ELOChart data={userMatches.data} />
         </div>
       )}

@@ -1,5 +1,5 @@
 import { Match } from '@prisma/client';
-import { FC, useMemo } from 'react';
+import { FC } from 'react';
 import { LineChart, Line, ResponsiveContainer, XAxis, Tooltip, YAxis, CartesianGrid, TooltipProps } from 'recharts';
 
 interface Props {
