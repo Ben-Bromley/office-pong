@@ -1,20 +1,49 @@
-import { Match } from '@prisma/client';
 import { FC } from 'react';
-import { LineChart, Line, ResponsiveContainer, XAxis, Tooltip, YAxis, CartesianGrid, TooltipProps } from 'recharts';
+import { Area, Line, ResponsiveContainer, XAxis, Tooltip, YAxis, CartesianGrid, AreaChart } from 'recharts';
 
 interface Props {
-  data: Match[] | undefined;
+  data: any;
+  compareData?: any;
 }
 
 const roundTen = (num: number) => Math.round(num / 10) * 10;
 
-const ELOChart: FC<Props> = ({ data }) => {
+const ELOChart: FC<Props> = ({ data, compareData }) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <LineChart data={data} margin={{ right: 20 }}>
+      <AreaChart margin={{ right: 20 }}>
+        <defs>
+          <linearGradient id="colorView" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="30%" stopColor="#000" stopOpacity={0.15} />
+            <stop offset="95%" stopColor="#FFFFFF" stopOpacity={0.1} />
+          </linearGradient>
+        </defs>
         <CartesianGrid stroke="#eee" strokeDasharray="2 2" horizontal />
-        <Line type="monotone" dataKey="userElo" stroke="#000000" strokeWidth="2px" />
-        <XAxis tick={false} />
+        <Area
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          data={data}
+          type="monotone"
+          isAnimationActive={false}
+          dataKey="userElo"
+          stroke="#000000"
+          strokeWidth="2px"
+          dot={false}
+          fill="url(#colorView)"
+        />
+        {compareData && (
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          <Area data={compareData} type="monotone" dataKey="userElo" stroke="#FF0000" strokeWidth="2px" dot={false} />
+        )}
+        <XAxis
+          dataKey="unixTime"
+          tick={false}
+          // name="time"
+          // allowDuplicatedCategory={false}
+          // type="number"
+          // domain={[(dataMin: number) => dataMin, (dataMax: number) => dataMax]}
+        />
         <YAxis
           tickCount={15}
           tick={{ fill: '#000000' }}
@@ -26,7 +55,7 @@ const ELOChart: FC<Props> = ({ data }) => {
           content={tooltipContent}
           wrapperStyle={{ outline: 'none' }}
         />
-      </LineChart>
+      </AreaChart>
     </ResponsiveContainer>
   );
 };
@@ -34,7 +63,12 @@ const ELOChart: FC<Props> = ({ data }) => {
 const tooltipContent: FC = (tooltipProps: any) => {
   return (
     <div className="z-100 bg-black text-white rounded-md p-2">
-      <p className="text-xs">ELO: {tooltipProps?.payload?.[0]?.payload?.userElo ?? 'Unknown'}</p>
+      <p className="text-xs">
+        {tooltipProps?.payload?.[1] && 'Your '}ELO: {tooltipProps?.payload?.[0]?.payload?.userElo}
+      </p>
+      {tooltipProps?.payload?.[1] && (
+        <p className="text-xs">Their ELO: {tooltipProps?.payload?.[1]?.payload?.userElo}</p>
+      )}
     </div>
   );
 };
