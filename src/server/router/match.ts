@@ -1,6 +1,7 @@
 import { createRouter } from './context';
 import { z } from 'zod';
 import EloRank from 'elo-rank';
+import { timeStamp } from 'console';
 
 export const matchRouter = createRouter()
   .mutation('create', {
@@ -56,6 +57,58 @@ export const matchRouter = createRouter()
           createdAt: 'desc'
         },
         take: 30
+      });
+    }
+  })
+  .query('userMatches', {
+    input: z.object({
+      id: z.string().nullable()
+    }),
+    async resolve({ input, ctx }) {
+      if (!input.id) return;
+
+      const matches = await ctx.prisma.match.findMany({
+        select: {
+          id: true,
+          playerOneId: true,
+          playerOneElo: true,
+          playerTwoElo: true,
+          createdAt: true
+        },
+        where: {
+          OR: [
+            {
+              playerOneId: input.id
+            },
+            {
+              playerTwoId: input.id
+            }
+          ],
+          AND: [
+            {
+              playerOneElo: {
+                not: -1
+              }
+            }
+          ]
+        }
+      });
+
+      // return a list of matches with the user's elo
+      return matches.map((match) => {
+        if (match.playerOneId === input.id) {
+          return {
+            ...match,
+            userElo: match.playerOneElo,
+            unixTime: new Date(match.createdAt)
+          };
+        } else {
+          return {
+            ...match,
+            userElo: match.playerTwoElo,
+            unixTime: new Date(match.createdAt)
+          };
+        }
       });
     }
   });
@@ -120,5 +173,4 @@ const calculateElo = async (input: any, ctx: any) => {
       }
     }
   });
-
 };

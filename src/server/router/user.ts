@@ -95,15 +95,21 @@ export const userRouter = createRouter()
           id: true,
           name: true,
           matchesPlayed: true,
-          matchesWon: true,
-          elo: true
+          matchesWon: true
         },
         where: {
           id: input.id
         }
       });
 
-      // get all matches for user and find the ones they lost
+      return user;
+    }
+  })
+  .query('insights', {
+    input: z.object({
+      id: z.string()
+    }),
+    async resolve({ ctx, input }) {
       const matches = await ctx.prisma.match.findMany({
         where: {
           OR: [
@@ -116,45 +122,63 @@ export const userRouter = createRouter()
           ]
         }
       });
-      const matchesLost = matches.filter((match) => {
-        return (
+
+      // Losses
+      const matchesLost = matches.filter(
+        (match) =>
           (match.playerOneId === input.id && match.playerOneScore < match.playerTwoScore) ||
           (match.playerTwoId === input.id && match.playerTwoScore < match.playerOneScore)
-        );
-      });
+      );
 
-      // loop through the matches and get the users they lost to
-      const opponents = matchesLost.map((match) => {
-        if (match.playerOneId === input.id) {
-          return match.playerTwoId;
-        } else {
-          return match.playerOneId;
-        }
-      });
+      const winners = matchesLost.map((match) =>
+        match.playerOneId === input.id ? match.playerTwoId : match.playerOneId
+      );
 
-      // sort opponents by most common to least common
-      const opponentCounts = opponents.reduce((acc, opponent) => {
-        if (acc[opponent]) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          acc[opponent] = acc[opponent] + 1;
-        } else {
-          acc[opponent] = 1;
-        }
-        return acc;
-      }, {} as Record<string, number>);
-      const sortedOpponents = Object.entries(opponentCounts).sort((a, b) => b[1] - a[1]);
+      const winnersCount = winners.reduce((acc, opponent) => {
+        return acc[opponent] ? { ...acc, [opponent]: acc[opponent] + 1 } : { ...acc, [opponent]: 1 };
+      }, {} as Record<string, any>);
+      const sortedWinners: [string, number][] = Object.entries(winnersCount).sort((a, b) => b[1] - a[1]);
 
-      const opponentName = await ctx.prisma.user.findMany({
-        where: {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          id: sortedOpponents[0][0]
-        }
-      });
+      // Wins
+      const matchesWon = matches.filter(
+        (match) =>
+          (match.playerOneId === input.id && match.playerOneScore > match.playerTwoScore) ||
+          (match.playerTwoId === input.id && match.playerTwoScore > match.playerOneScore)
+      );
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      return { ...user, fearedOpponent: opponentName[0].name, fearedOpponentCount: sortedOpponents[0][1] };
+      const losers = matchesWon.map((match) =>
+        match.playerOneId === input.id ? match.playerTwoId : match.playerOneId
+      );
+
+      const losersCount = losers.reduce((acc, opponent) => {
+        return acc[opponent] ? { ...acc, [opponent]: acc[opponent] + 1 } : { ...acc, [opponent]: 1 };
+      }, {} as Record<string, any>);
+      const sortedLosers: [string, number][] = Object.entries(losersCount).sort((a, b) => b[1] - a[1]) ?? null;
+
+      const last5matches = matches.slice(-5);
+      let eloChange = null;
+      if (last5matches.length === 5) {
+        const match5Elo =
+          last5matches[0]!.playerOneId === input.id ? last5matches[0]!.playerOneElo : last5matches[0]!.playerTwoElo;
+
+        const player = await ctx.prisma.user.findFirst({
+          select: {
+            elo: true
+          },
+          where: {
+            id: input.id
+          }
+        });
+
+        eloChange = (player?.elo || 0) - match5Elo;
+      }
+
+      return {
+        mostLossUser: await ctx.prisma.user.findUnique({ where: { id: sortedWinners?.[0]?.[0] } }),
+        mostWinUser: await ctx.prisma.user.findUnique({ where: { id: sortedLosers?.[0]?.[0] } }),
+        mostLossPercent: {}, // TODO
+        mostWinPercent: {}, // TODO
+        eloChange: eloChange
+      };
     }
   });
