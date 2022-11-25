@@ -172,9 +172,7 @@ const NewGameForm: FC = () => {
         </div>
       </div>
 
-      <div className="border-b border-slate-100 my-4" />
-
-      <div className="flex flex-row justify-end">
+      <div className="flex flex-row justify-end mt-6">
         <button
           type="button"
           onClick={() => submitGame()}

@@ -76,7 +76,8 @@ export const userRouter = createRouter()
           name: true,
           matchesPlayed: true,
           matchesWon: true,
-          elo: true
+          elo: true,
+          image: true
         },
         orderBy: {
           elo: 'desc'

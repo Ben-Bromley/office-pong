@@ -13,10 +13,10 @@ const Scoreboard: FC = () => {
 
   return (
     <SectionCard>
-      <SectionTitle title="🏓 &nbsp;Scoreboard" />
+      <SectionTitle title="🏓 &nbsp;Leaderboard" />
       <div className="w-full px-4 py-2 rounded-md flex flex-row justify-between mb-1 bg-gradient-to-b from-[#fAfCfE] to-slate-50">
         <div className="flex">
-          <span className={clsx('mr-2 self-center w-4 text-center text-sm font-bold')}>#</span>
+          <span className={clsx('mr-2 self-center text-center text-sm font-bold w-5')}>#</span>
           <p className="mx-2 font-semibold">Name</p>
         </div>
         <div className="flex flex-row">
@@ -31,7 +31,7 @@ const Scoreboard: FC = () => {
         </div>
       </div>
 
-      <ul className="max-h-[40em] relative overflow-y-auto overflow-x-hidden">
+      <ul className="max-h-[26.5em] relative overflow-y-auto overflow-x-hidden">
         {scoreboard.status === 'loading' && <SkeletonLoader rows={3} />}
         {scoreboard.data?.map((player, idx) => (
           <ScoreboardItem key={player.id} idx={idx} player={player} />

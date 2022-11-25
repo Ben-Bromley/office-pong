@@ -5,7 +5,8 @@ import SkeletonLoader from '../../shared/SkeletonLoader';
 import SectionTitle from '../../shared/SectionTitle';
 import Insights from './Insights';
 import SectionCard from '../../shared/SectionCard';
-import { LogOut } from 'lucide-react';
+import { Activity, AlertTriangle, Joystick, LogOut, Trophy } from 'lucide-react';
+import clsx from 'clsx';
 
 interface Props {
   playerId: string;
@@ -37,43 +38,57 @@ const StatsCard: FC<Props> = ({ playerId, playerName }) => {
         )}
       </div>
 
-      <div className="flex flex-row">
-        <div className="flex flex-row mb-2 text-sm w-full">
-          <p className="font-normal text-white rounded-md px-1.5 bg-gradient-to-bl from-indigo-400 to-purple-500 self-center">
-            {stats.data?.matchesPlayed || 0}
-          </p>
-          <p className="ml-2 font-normal">Total Games Played</p>
-        </div>
-
-        <div className="flex flex-row mb-2 text-sm w-full">
-          <p className="font-normal text-white px-1.5 rounded-md bg-gradient-to-bl from-sky-400 to-blue-500 self-center">
-            {stats.data?.matchesPlayed
-              ? Math.round(((stats.data?.matchesWon || 0) / stats.data?.matchesPlayed) * 100)
-              : 0}
-            %
-          </p>
-          <p className="ml-2 font-normal">Win Percentage </p>
-        </div>
+      <div className="flex flex-row mb-6">
+        <StatItem
+          title={'Matches Played'}
+          value={stats.data?.matchesPlayed || 0}
+          gradient="bg-gradient-to-bl from-gray-200 via-white to-gray-100"
+          icon={<Joystick className="w-5 h-5 text-black self-center" />}
+        />
+        <StatItem
+          title={'Win Percentage'}
+          value={
+            stats.data?.matchesPlayed
+              ? Math.round(((stats.data?.matchesWon || 0) / stats.data?.matchesPlayed) * 100) + '%'
+              : 0
+          }
+          gradient="bg-gradient-to-br from-sky-200 via-white to-sky-100"
+          icon={<Activity className="w-5 h-5 text-black self-center" />}
+        />
+        <StatItem
+          title={'Matches Won'}
+          value={stats.data?.matchesWon || 0}
+          gradient="bg-gradient-to-br from-lime-200 via-white to-white"
+          icon={<Trophy className="w-5 h-5 text-black self-center" />}
+        />
+        <StatItem
+          title={'Matches Lost'}
+          value={(stats.data?.matchesPlayed || 0) - (stats.data?.matchesWon || 0)}
+          gradient="bg-gradient-to-tr from-red-200 via-white to-white"
+          icon={<AlertTriangle className="w-5 h-5 text-black self-center" />}
+        />
       </div>
-
-      <div className="flex flex-row">
-        <div className="flex flex-row mb-2 text-sm w-full">
-          <p className="font-normal text-white px-1.5 rounded-md bg-gradient-to-bl from-emerald-400 to-emerald-500 self-center">
-            {stats.data?.matchesWon || 0}
-          </p>
-          <p className="ml-2 font-normal">Games Won </p>
-        </div>
-        <div className="flex flex-row mb-2 text-sm w-full">
-          <p className="font-normal text-white px-1.5 rounded-md bg-gradient-to-bl from-red-400 to-red-500 self-center">
-            {(stats.data?.matchesPlayed || 0) - (stats.data?.matchesWon || 0)}
-          </p>
-          <p className="ml-2 font-normal">Games Lost </p>
-        </div>
-      </div>
-
-      <div className="border-b border-slate-100 my-3.5" />
       <Insights playerId={playerId} />
     </SectionCard>
+  );
+};
+
+interface StatItemProps {
+  title: string;
+  value: number | string;
+  icon?: JSX.Element;
+  gradient: string;
+}
+
+const StatItem: FC<StatItemProps> = ({ title, value, gradient, icon }) => {
+  return (
+    <div className={clsx('flex flex-col p-2 text-sm w-1/4 rounded-xl mr-4 shadow-sm', gradient)}>
+      <div className="flex flex-row justify-between">
+        <p className="font-semibold text-black text-2xl">{value}</p>
+        {icon}
+      </div>
+      <p className="font-semibold mt-2 text-black">{title}</p>
+    </div>
   );
 };
 
