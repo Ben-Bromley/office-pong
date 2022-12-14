@@ -19,7 +19,7 @@ const Tooltip: FC<Props> = ({ content, children, className, contentClassName }) 
         className={clsx('relative', className)}
       >
         {show && (
-          <div className={clsx('absolute z-100 bg-black text-white rounded-md p-2', contentClassName)}>
+          <div className={clsx('absolute z-100 bg-black text-white rounded-lg p-2', contentClassName)}>
             <p className="text-xs">{content}</p>
           </div>
         )}

@@ -4,7 +4,7 @@ import { FC, useRef, useState } from 'react';
 import { trpc } from '../../utils/trpc';
 import { useQueryClient } from 'react-query';
 import SectionTitle from '../shared/SectionTitle';
-import { ArrowRightCircle, ChevronDown, RotateCw } from 'lucide-react';
+import { ArrowRightCircle, ChevronDown, FileEdit, FilePieChart, Plus, RotateCw } from 'lucide-react';
 import SectionCard from '../shared/SectionCard';
 
 interface PlayerSelectProps {
@@ -12,11 +12,6 @@ interface PlayerSelectProps {
   name: string;
   setName: (name: string) => void;
 }
-
-// interface ScoreProps {
-//   score: number;
-//   setScore: (score: number) => void;
-// }
 
 const NewGameForm: FC = () => {
   const queryClient = useQueryClient();
@@ -84,7 +79,7 @@ const NewGameForm: FC = () => {
 
   const PlayerSelect: FC<PlayerSelectProps> = ({ label, name, setName }) => (
     <div className="flex flex-col w-full">
-      <label htmlFor={name} className="mb-1 text-xs text-slate-400">
+      <label htmlFor={name} className="mb-1 ml-0.5 text-xs text-gray-400 font-normal">
         Player {label}
       </label>
       <div className="flex flex-row">
@@ -100,9 +95,9 @@ const NewGameForm: FC = () => {
             }}
             disabled={match.isLoading}
             className={clsx(
-              'border  text-sm rounded-sm block w-full py-1 h-8 px-2 appearance-none',
-              label === 'Two' && errors.playerTwoId ? 'border-red-500' : 'border-slate-300',
-              name === '' ? 'text-gray-400' : 'text-gray-900'
+              'border-2 text-sm rounded-lg block w-full py-1 h-8 px-2 appearance-none',
+              label === 'Two' && errors.playerTwoId ? 'border-red-500' : 'border-slate-200',
+              name === '' ? 'text-gray-400' : 'text-gray-900 font-normal'
             )}
           >
             <option value="" disabled>
@@ -138,14 +133,15 @@ const NewGameForm: FC = () => {
 
   return (
     <SectionCard>
-      <SectionTitle title="📝 &nbsp;New Game" />
-      <div className="flex flex-row w-full gap-4">
+      <SectionTitle icon={<FileEdit />} title="New Game" />
+      <div className="flex flex-row w-full gap-3">
         <div className="flex flex-row w-full">
           <PlayerSelect label="One" name={playerOneId} setName={setPlayerOneId} />
           <input
             className={clsx(
-              'border text-gray-900 text-sm rounded-sm block w-12 py-1 px-2 ml-1 cursor-default self-end h-8',
-              errors.playerOneScore ? 'border-red-500' : 'border-slate-300'
+              'border-2 text-gray-900 text-sm rounded-lg block w-12 py-1 px-2 ml-1 cursor-default self-end h-8 appearance-none',
+              errors.playerOneScore ? 'border-red-500' : 'border-slate-200',
+              playerOneScore === 0 && 'font-medium'
             )}
             type={'number'}
             min={0}
@@ -159,8 +155,9 @@ const NewGameForm: FC = () => {
           <PlayerSelect label="Two" name={playerTwoId} setName={setPlayerTwoId} />
           <input
             className={clsx(
-              'border text-gray-900 text-sm rounded-sm block w-12 py-1 px-2 ml-1 cursor-default self-end h-8',
-              errors.playerTwoScore ? 'border-red-500' : 'border-slate-300'
+              'border-2 text-gray-900 text-sm rounded-lg block w-12 py-1 px-2 ml-1 cursor-default self-end h-8 appearance-none',
+              errors.playerTwoScore ? 'border-red-500' : 'border-slate-200',
+              playerTwoScore === 0 && 'font-medium'
             )}
             type={'number'}
             min={0}
@@ -172,13 +169,13 @@ const NewGameForm: FC = () => {
         </div>
       </div>
 
-      <div className="flex flex-row justify-end mt-6">
+      <div className="flex flex-row justify-end mt-4">
         <button
           type="button"
           onClick={() => submitGame()}
           disabled={match.isLoading}
           className={clsx(
-            'text-white focus:outline-none font-normal rounded-md text-sm px-3.5 py-2 text-center inline-flex items-center bg-black',
+            'text-white focus:outline-none font-medium rounded-lg text-sm px-3.5 py-2 text-center inline-flex items-center bg-black',
             match.isLoading && 'opacity-30 cursor-not-allowed'
           )}
         >

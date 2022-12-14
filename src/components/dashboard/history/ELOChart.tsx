@@ -1,14 +1,24 @@
 import { FC } from 'react';
-import { Area, Line, ResponsiveContainer, XAxis, Tooltip, YAxis, CartesianGrid, AreaChart } from 'recharts';
+import { Area, ResponsiveContainer, XAxis, Tooltip, YAxis, CartesianGrid, AreaChart } from 'recharts';
+import { trpc } from '../../../utils/trpc';
+import LoadingSpinner from '../../shared/LoadingSpinner';
 
 interface Props {
-  data: any;
-  compareData?: any;
+  userId: string;
 }
 
 const roundTen = (num: number) => Math.round(num / 10) * 10;
 
-const ELOChart: FC<Props> = ({ data, compareData }) => {
+const ELOChart: FC<Props> = ({ userId }) => {
+  const userMatches = trpc.useQuery(['match.userMatches', { id: userId }]);
+
+  if (userMatches.status === 'loading')
+    return (
+      <div className="w-full h-full">
+        <LoadingSpinner />
+      </div>
+    );
+
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart margin={{ right: 20 }}>
@@ -22,7 +32,7 @@ const ELOChart: FC<Props> = ({ data, compareData }) => {
         <Area
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          data={data}
+          data={userMatches.data || []}
           type="monotone"
           isAnimationActive={false}
           dataKey="userElo"
@@ -31,19 +41,7 @@ const ELOChart: FC<Props> = ({ data, compareData }) => {
           dot={false}
           fill="url(#colorView)"
         />
-        {compareData && (
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          <Area data={compareData} type="monotone" dataKey="userElo" stroke="#FF0000" strokeWidth="2px" dot={false} />
-        )}
-        <XAxis
-          dataKey="unixTime"
-          tick={false}
-          // name="time"
-          // allowDuplicatedCategory={false}
-          // type="number"
-          // domain={[(dataMin: number) => dataMin, (dataMax: number) => dataMax]}
-        />
+        <XAxis dataKey="unixTime" tick={false} />
         <YAxis
           tickCount={15}
           tick={{ fill: '#000000' }}
