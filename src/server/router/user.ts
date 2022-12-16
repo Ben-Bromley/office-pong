@@ -76,7 +76,8 @@ export const userRouter = createRouter()
           name: true,
           matchesPlayed: true,
           matchesWon: true,
-          elo: true
+          elo: true,
+          image: true
         },
         orderBy: {
           elo: 'desc'
@@ -182,3 +183,11 @@ export const userRouter = createRouter()
       };
     }
   });
+
+// 11
+// 0001 0001
+
+const numberToBCD = (number: number) => {
+  const binary = number.toString(2);
+  for (let i = 0; i < binary.length; ++i) {}
+};
