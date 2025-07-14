@@ -14,8 +14,6 @@ There was once a long explanation of how much better T3 is than NEXT.js and Fire
 
 These instructions a wip, so let me know if you encounter any issues.
 
-### 
-
 ### Database Set-up
 
 in primsa/schema.prisma
@@ -37,11 +35,14 @@ $ npx prisma db seed
 ### Auth Setup
 
 Set up both the google auth and next auth stuff.
+
 #### Google Auth ([Documentation](https://next-auth.js.org/providers/google))
+
 - Set up a [new google cloud project](https://console.cloud.google.com/projectcreate)
 - generate a new oauth client
 - add the keys from the new oauth into .env
 
 #### Next Auth
+
 - the next auth secret can be any random string
 - the next auth url should be http://localhost:3000
