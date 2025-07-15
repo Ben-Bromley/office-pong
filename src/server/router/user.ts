@@ -78,6 +78,11 @@ export const userRouter = createRouter()
           matchesWon: true,
           elo: true
         },
+         where: {
+          matchesPlayed: {
+            gte: 3
+          }
+        },
         orderBy: {
           elo: 'desc'
         }
