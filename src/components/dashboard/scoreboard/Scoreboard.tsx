@@ -56,7 +56,7 @@ const Scoreboard: FC = () => {
               players.length > 0 ? (
                 <CollapsibleSection key={rank} title={rank} color={RANK_COLORS[rank]}>
                   {players.map((player, idx) => (
-                    <ScoreboardItem key={player.id} idx={idx} player={player} />
+                    <ScoreboardItem key={player.id} idx={idx} player={player} rank={rank}/>
                   ))}
                 </CollapsibleSection>
               ) : null

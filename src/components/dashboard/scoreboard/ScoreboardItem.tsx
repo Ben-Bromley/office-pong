@@ -3,21 +3,27 @@ import { useSession } from 'next-auth/react';
 import { FC, useState } from 'react';
 import CountUp from 'react-countup';
 import StatsCard from '../stats/StatsCard';
+import { Player } from '../../../types/types';
 
-interface Player {
-  id: string;
-  name: string | null;
-  matchesPlayed: number;
-  matchesWon: number;
-  elo: number;
-}
+export const RANK_EMOJIS: Record<string, string> = {
+  Mythical: '🧙‍♂️',
+  Legendary: '🦁',
+  Diamond: '💎',
+  Platinum: '⚪',
+  Gold: '🥇',
+  Silver: '🥈',
+  Bronze: '🥉',
+  Wood: '🌲',
+  Papyrus: '📜',
+};
 
 interface Props {
   player: Player;
   idx: number;
+  rank: string;
 }
 
-const ScoreboardItem: FC<Props> = ({ player, idx }) => {
+const ScoreboardItem: FC<Props> = ({ player, idx, rank }) => {
   const { data: session } = useSession();
   const [playerStatId, setPlayerStatId] = useState<string | null>(null);
 
@@ -25,7 +31,7 @@ const ScoreboardItem: FC<Props> = ({ player, idx }) => {
     <li key={player.id} className={clsx('px-4 py-2.5 flex justify-between mb-0 border-b border-gray-100  relative')}>
       <div className="flex">
         <span className={clsx('mr-2 self-center w-4 text-center font-light', idx === 0 ? 'text-md' : 'text-xs')}>
-          {idx === 0 ? '🏆' : `#${idx + 1}`}
+          {idx === 0 ? RANK_EMOJIS[rank] : `#${idx + 1}`}
         </span>
         <div className="flex flex-row">
           <p className={clsx('ml-2', session?.user?.id === player.id ? 'font-semibold' : 'font-normal')}>

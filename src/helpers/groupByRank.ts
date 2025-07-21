@@ -18,10 +18,9 @@ const RANKS: RankGroup[] = [
   { label: 'Mythical', min: 2000, max: Infinity },
 ];
 
-const groupByRank = (players: Player[] | undefined) => {
+const groupByRank = (players: Player[]) => {
   const grouped: Record<string, Player[]> = {};
 
-  if (!players) return grouped;
   for (const { label, min, max } of RANKS) {
     grouped[label] = players
       .filter(p => p.elo >= min && p.elo <= max)
