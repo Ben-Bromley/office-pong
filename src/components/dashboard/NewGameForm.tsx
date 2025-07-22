@@ -6,11 +6,13 @@ import { useQueryClient } from 'react-query';
 import SectionTitle from '../shared/SectionTitle';
 import { ArrowRightCircle, ChevronDown, RotateCw } from 'lucide-react';
 import SectionCard from '../shared/SectionCard';
+import ScoreInput from './ScoreInput';
 
 interface PlayerSelectProps {
   label: 'One' | 'Two';
   name: string;
   setName: (name: string) => void;
+  isServing: boolean;
 }
 
 // interface ScoreProps {
@@ -82,10 +84,10 @@ const NewGameForm: FC = () => {
     setPlayerTwoId('');
   };
 
-  const PlayerSelect: FC<PlayerSelectProps> = ({ label, name, setName }) => (
+  const PlayerSelect: FC<PlayerSelectProps> = ({ label, name, setName, isServing }) => (
     <div className="flex flex-col w-full">
-      <label htmlFor={name} className="mb-1 text-xs text-slate-400">
-        Player {label}
+      <label htmlFor={name} className="h-6 text-xs text-slate-400">
+        Player {label} {isServing && "🏓"}
       </label>
       <div className="flex flex-row">
         <div className="inline-block relative w-full">
@@ -136,38 +138,37 @@ const NewGameForm: FC = () => {
     </div>
   );
 
+
+  const getServer = () => {
+    const totalPoints = playerOneScore + playerTwoScore;
+
+    if (playerOneScore >= 10 && playerTwoScore >= 10) {
+      return totalPoints % 2 === 0 ? 'Player One' : 'Player Two';
+    } else {
+      return Math.floor(totalPoints / 2) % 2 === 0 ? 'Player One' : 'Player Two';
+    }
+  };
+
   return (
     <SectionCard>
       <SectionTitle title="📝 &nbsp;New Game" />
       <div className="flex flex-row w-full gap-4">
         <div className="flex flex-row w-full">
-          <PlayerSelect label="One" name={playerOneId} setName={setPlayerOneId} />
-          <input
-            className={clsx(
-              'border text-gray-900 text-sm rounded-sm block w-12 py-1 px-2 ml-1 cursor-default self-end h-8',
-              errors.playerOneScore ? 'border-red-500' : 'border-slate-300'
-            )}
-            type={'number'}
-            min={0}
-            ref={playerOneInputRef}
+          <PlayerSelect label="One" name={playerOneId} setName={setPlayerOneId} isServing={getServer() === 'Player One'} />
+          <ScoreInput
             value={playerOneScore}
+            onChange={setPlayerOneScore}
             disabled={match.isLoading}
-            onChange={(e) => setPlayerOneScore(parseInt(e.target.value))}
+            hasError={errors.playerOneScore}
           />
         </div>
         <div className="flex flex-row w-full">
-          <PlayerSelect label="Two" name={playerTwoId} setName={setPlayerTwoId} />
-          <input
-            className={clsx(
-              'border text-gray-900 text-sm rounded-sm block w-12 py-1 px-2 ml-1 cursor-default self-end h-8',
-              errors.playerTwoScore ? 'border-red-500' : 'border-slate-300'
-            )}
-            type={'number'}
-            min={0}
-            ref={playerTwoInputRef}
+          <PlayerSelect label="Two" name={playerTwoId} setName={setPlayerTwoId} isServing={getServer() === 'Player Two'} />
+          <ScoreInput
             value={playerTwoScore}
+            onChange={setPlayerTwoScore}
             disabled={match.isLoading}
-            onChange={(e) => setPlayerTwoScore(parseInt(e.target.value))}
+            hasError={errors.playerTwoScore}
           />
         </div>
       </div>
