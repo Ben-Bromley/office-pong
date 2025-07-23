@@ -1,7 +1,7 @@
 import { createRouter } from './context';
 import { z } from 'zod';
 import EloRank from 'elo-rank';
-import { timeStamp } from 'console';
+import { Match } from '@prisma/client';
 
 export const matchRouter = createRouter()
   .mutation('create', {
@@ -51,12 +51,16 @@ export const matchRouter = createRouter()
     }
   })
   .query('getAll', {
-    async resolve({ ctx }) {
+    input: z.object({
+      page: z.number().optional().default(1)
+    }),
+    async resolve({ input, ctx }) {
       return await ctx.prisma.match.findMany({
         orderBy: {
           createdAt: 'desc'
         },
-        take: 30
+        take: 30,
+        skip: 30 * (input.page - 1)
       });
     }
   })
@@ -67,7 +71,7 @@ export const matchRouter = createRouter()
     async resolve({ input, ctx }) {
       if (!input.id) return;
 
-      const matches = await ctx.prisma.match.findMany({
+      const matches = (await ctx.prisma.match.findMany({
         select: {
           id: true,
           playerOneId: true,
@@ -92,7 +96,7 @@ export const matchRouter = createRouter()
             }
           ]
         }
-      });
+      })) as Match[];
 
       // return a list of matches with the user's elo
       return matches.map((match) => {

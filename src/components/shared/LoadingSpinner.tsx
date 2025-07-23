@@ -3,7 +3,7 @@ import { FC } from 'react';
 const LoadingSpinner: FC = () => {
   // spinner from https://loading.io/css/
   return (
-    <div role="status" className="w-full h-screen flex items-center justify-center">
+    <div role="status" className="w-full h-full flex items-center justify-center">
       <span className="sr-only">Loading...</span>
       <div className="lds-roller">
         <div></div>
@@ -33,7 +33,7 @@ const LoadingSpinner: FC = () => {
           width: 7px;
           height: 7px;
           border-radius: 50%;
-          background: #79a9f2;
+          background: #000000;
           margin: -4px 0 0 -4px;
         }
         .lds-roller div:nth-child(1) {

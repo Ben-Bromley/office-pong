@@ -4,23 +4,27 @@ import clsx from 'clsx';
 import SkeletonLoader from '../../shared/SkeletonLoader';
 import Tooltip from '../../shared/Tooltip';
 import ScoreboardItem from './ScoreboardItem';
-import SectionTitle from '../../shared/SectionTitle';
 import { Info } from 'lucide-react';
 import SectionCard from '../../shared/SectionCard';
+import Leaders from './Leaders';
 
 const Scoreboard: FC = () => {
   const scoreboard = trpc.useQuery(['user.scoreboard']);
 
   return (
     <SectionCard>
-      <SectionTitle title="🏓 &nbsp;Scoreboard" />
-      <div className="w-full px-4 py-2 rounded-md flex flex-row justify-between mb-1 bg-gradient-to-b from-[#fAfCfE] to-slate-50">
+      <Leaders />
+      <div className="w-full px-4 py-2 rounded-md flex flex-row justify-between mb-1 bg-gradient-to-b from-[#fAfCfE] to-slate-50 dark:from-slate-900 dark:to-slate-900">
         <div className="flex">
-          <span className={clsx('mr-2 self-center w-4 text-center text-sm font-bold')}>#</span>
-          <p className="mx-2 font-semibold">Name</p>
+          <span
+            className={clsx('mr-2 self-center text-center text-sm font-bold w-5 text-gray-900 dark:text-slate-700')}
+          >
+            #
+          </span>
+          <p className="mx-2 font-semibold text-gray-900 dark:text-slate-700">Name</p>
         </div>
         <div className="flex flex-row">
-          <h2 className="text-md font-bold self-center mr-1">ELO</h2>
+          <h2 className="text-md font-bold self-center mr-1 text-gray-900 dark:text-slate-700">ELO</h2>
           <Tooltip
             className="w-3 h-3 self-center"
             content={'The ELO rating system is a method for calculating the relative skill of a player'}
@@ -31,8 +35,8 @@ const Scoreboard: FC = () => {
         </div>
       </div>
 
-      <ul className="max-h-[40em] relative overflow-y-auto overflow-x-hidden">
-        {scoreboard.status === 'loading' && <SkeletonLoader rows={3} />}
+      <ul className="max-h-[32.25em] relative overflow-y-auto overflow-x-hidden">
+        {scoreboard.status === 'loading' && <SkeletonLoader rows={5} className="mt-2" />}
         {scoreboard.data?.map((player, idx) => (
           <ScoreboardItem key={player.id} idx={idx} player={player} />
         ))}

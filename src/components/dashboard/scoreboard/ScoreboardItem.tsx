@@ -1,7 +1,8 @@
 import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
 import { FC, useState } from 'react';
-import CountUp from 'react-countup';
+import SectionCard from '../../shared/SectionCard';
+import ELOChart from '../history/ELOChart';
 import StatsCard from '../stats/StatsCard';
 
 interface Player {
@@ -22,46 +23,63 @@ const ScoreboardItem: FC<Props> = ({ player, idx }) => {
   const [playerStatId, setPlayerStatId] = useState<string | null>(null);
 
   return (
-    <li key={player.id} className={clsx('px-4 py-2.5 flex justify-between mb-0 border-b border-gray-100  relative')}>
+    <li className={clsx('px-4 py-3.5 flex justify-between mb-0 relative')}>
       <div className="flex">
-        <span className={clsx('mr-2 self-center w-4 text-center font-light', idx === 0 ? 'text-md' : 'text-xs')}>
-          {idx === 0 ? '🏆' : `#${idx + 1}`}
-        </span>
-        <div className="flex flex-row">
-          <p className={clsx('ml-2', session?.user?.id === player.id ? 'font-semibold' : 'font-normal')}>
-            {player.name}
-          </p>
-          {player.id !== session?.user?.id && (
-            <div
-              className="w-2 h-2 rounded-full bg-sky-200 text-xs cursor-default self-center ml-2 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-gray-200  to-blue-100"
-              onMouseEnter={() => setPlayerStatId(player.id)}
-              onMouseLeave={() => setPlayerStatId(null)}
-            />
-          )}
-        </div>
+        <NumberBadge number={idx + 1} />
+        <p className="ml-4 text-gray-900 dark:text-white font-medium">{player.name}</p>
       </div>
       <div className="flex flex-row">
         <p
           className={clsx(
-            'font-normal text-end px-1 rounded-md',
-            idx === 0 &&
-              'animate-gradient bg-gradient-to-br from-yellow-500 via-amber-200 to-yellow-400 shadow-sm shadow-yellow-100',
-            session?.user?.id === player.id && 'font-semibold'
+            'font-medium text-end px-2 rounded-xl cursor-default',
+            player.id === session?.user?.id ? 'bg-blue-100 text-blue-900' : 'bg-slate-100 text-slate-700'
           )}
+          onMouseEnter={() => player.id !== session?.user?.id && setPlayerStatId(player.id)}
+          onMouseLeave={() => player.id !== session?.user?.id && setPlayerStatId(null)}
         >
-          {idx === 0 ? <CountUp end={player.elo} duration={0.9} /> : player.elo}
+          {player.elo}
         </p>
       </div>
       {playerStatId === player.id && (
         <div
-          className={clsx('absolute left-0 w-full z-50 shadow-2xl bg-black bg-opacity-60 rounded-md')}
+          className="absolute left-0 w-full z-50 shadow-2xl bg-black bg-opacity-40 rounded-xl cursor-auto"
           onMouseEnter={() => setPlayerStatId(player.id)}
           onMouseLeave={() => setPlayerStatId(null)}
         >
-          <StatsCard playerId={player.id} playerName={player.name ?? ''} />
+          <StatsCard playerId={player.id} />
+          <SectionCard>
+            <div className="w-full">
+              <div className="h-56 -ml-4 mt-2">
+                <ELOChart userId={player.id ?? ''} />
+              </div>
+            </div>
+          </SectionCard>
         </div>
       )}
     </li>
+  );
+};
+
+interface NumberBadgeProps {
+  number: number;
+}
+
+const NumberBadge: FC<NumberBadgeProps> = ({ number }) => {
+  return (
+    <div
+      className={clsx(
+        'w-5 h-5 pt-0.5 rounded-full text-xs text-center font-bold self-center',
+        number === 1 &&
+          'text-white animate-gradient bg-gradient-to-br from-yellow-600 via-yellow-300 to-yellow-500 shadow-sm shadow-yellow-100',
+        number === 2 &&
+          'text-white animate-gradient bg-gradient-to-br from-gray-500 via-gray-400 to-gray-500 shadow-sm shadow-gray-100',
+        number === 3 &&
+          'text-white animate-gradient bg-gradient-to-br from-yellow-700 via-yellow-700 to-yellow-800 shadow-sm shadow-gray-100',
+        number > 3 && 'bg-slate-100 text-gray-600 dark:bg-slate-600 dark:text-gray-300'
+      )}
+    >
+      {number}
+    </div>
   );
 };
 
