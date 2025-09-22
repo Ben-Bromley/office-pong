@@ -7,15 +7,17 @@ type RankGroup = {
 };
 
 const RANKS: RankGroup[] = [
-  { label: 'Papyrus', min: 0, max: 499 },
-  { label: 'Wood', min: 500, max: 699 },
-  { label: 'Bronze', min: 700, max: 899 },
-  { label: 'Silver', min: 900, max: 999 },
-  { label: 'Gold', min: 1000, max: 1299 },
-  { label: 'Platinum', min: 1300, max: 1499 },
-  { label: 'Diamond', min: 1500, max: 1799 },
-  { label: 'Legendary', min: 1800, max: 1999 },
-  { label: 'Mythical', min: 2000, max: Infinity },
+  { label: 'Poop', min: 0, max: 799 },
+  { label: 'Papyrus', min: 800, max: 849 },
+  { label: 'Wood', min: 850, max: 899 },
+  { label: 'Stone', min: 900, max: 949 },
+  { label: 'Bronze', min: 950, max: 999 },
+  { label: 'Silver', min: 1000, max: 1049 },
+  { label: 'Gold', min: 1050, max: 1099 },
+  { label: 'Platinum', min: 1100, max: 1149 },
+  { label: 'Diamond', min: 1150, max: 1199 },
+  { label: 'Legendary', min: 1200, max: 1249 },
+  { label: 'Mythical', min: 1250, max: Infinity },
 ];
 
 const groupByRank = (players: Player[]) => {
