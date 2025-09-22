@@ -14,12 +14,15 @@ const RANK_COLORS: Record<string, string> = {
   Mythical: 'from-purple-700 to-indigo-500',
   Legendary: 'from-yellow-500 to-orange-400',
   Diamond: 'from-cyan-500 to-blue-400',
+  Stone: 'from-stone-400 to-stone-300',
   Platinum: 'from-slate-400 to-slate-300',
   Gold: 'from-yellow-400 to-yellow-300',
   Silver: 'from-gray-300 to-gray-200',
   Bronze: 'from-orange-400 to-amber-300',
   Wood: 'from-amber-700 to-amber-600',
-  Papyrus: 'from-lime-200 to-yellow-100',
+  // Low-saturation cloth/beige gradient for Papyrus
+  Papyrus: 'from-[#d9cbb4] to-[#cbbfa3]',
+  Poop: 'from-amber-900 to-orange-800',
 };
 
 

@@ -6,9 +6,11 @@ import StatsCard from '../stats/StatsCard';
 import { Player } from '../../../types/types';
 
 export const RANK_EMOJIS: Record<string, string> = {
+  Poop: '💩',
   Mythical: '🧙‍♂️',
   Legendary: '🦁',
   Diamond: '💎',
+  Stone: '🪨',
   Platinum: '⚪',
   Gold: '🥇',
   Silver: '🥈',
