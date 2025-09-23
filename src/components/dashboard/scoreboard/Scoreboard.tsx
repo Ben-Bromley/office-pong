@@ -28,7 +28,6 @@ const RANK_COLORS: Record<string, string> = {
 
 const Scoreboard: FC = () => {
   const scoreboard = trpc.useQuery(['user.scoreboard']);
-  console.log('Scoreboard data:', scoreboard.data);
 
   return (
     <SectionCard>
