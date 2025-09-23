@@ -11,7 +11,7 @@ export const RANK_EMOJIS: Record<string, string> = {
   Legendary: '🦁',
   Diamond: '💎',
   Stone: '🪨',
-  Platinum: '⚪',
+  Platinum: '🪩',
   Gold: '🥇',
   Silver: '🥈',
   Bronze: '🥉',
