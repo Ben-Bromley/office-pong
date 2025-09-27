@@ -79,7 +79,6 @@ const NewGameForm: FC = () => {
     );
     setPlayerOneScore(0);
     setPlayerTwoScore(0);
-    setPlayerTwoId('');
   };
 
   const PlayerSelect: FC<PlayerSelectProps> = ({ label, name, setName }) => (
