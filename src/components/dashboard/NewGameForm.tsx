@@ -7,6 +7,12 @@ import SectionTitle from '../shared/SectionTitle';
 import { ArrowRightCircle, ChevronDown, RotateCw } from 'lucide-react';
 import SectionCard from '../shared/SectionCard';
 
+interface ScoreButtonGroupProps {
+  score: number;
+  setScore: (score: number) => void;
+  disabled?: boolean;
+}
+
 interface PlayerSelectProps {
   label: 'One' | 'Two';
   name: string;
@@ -81,6 +87,31 @@ const NewGameForm: FC = () => {
     setPlayerTwoScore(0);
   };
 
+  const ScoreButtonGroup: FC<ScoreButtonGroupProps> = ({ score, setScore, disabled}) => {
+    const increments = [1, 5, 11];
+
+    return (
+        <div className="inline-flex w-full mt-2">
+          {increments.map((inc, idx) => (
+            <button
+              key={inc}
+              type="button"
+              disabled={disabled}
+              onClick={() => setScore(score + inc)}
+              className={clsx(
+                'w-full px-2 py-1 text-xs border border-slate-300 bg-slate-50 hover:bg-slate-100',
+                idx === 0 && 'rounded-l-lg',
+                idx === increments.length - 1 && 'rounded-r-lg',
+                idx > 0 && '-ml-px'
+              )}
+            >
+              +{inc}
+            </button>
+          ))}
+        </div>
+    );
+  }
+
   const PlayerSelect: FC<PlayerSelectProps> = ({ label, name, setName }) => (
     <div className="flex flex-col w-full">
       <label htmlFor={name} className="mb-1 text-xs text-slate-400">
@@ -139,34 +170,48 @@ const NewGameForm: FC = () => {
     <SectionCard>
       <SectionTitle title="📝 &nbsp;New Game" />
       <div className="flex flex-row w-full gap-4">
-        <div className="flex flex-row w-full">
-          <PlayerSelect label="One" name={playerOneId} setName={setPlayerOneId} />
-          <input
-            className={clsx(
-              'border text-gray-900 text-sm rounded-sm block w-12 py-1 px-2 ml-1 cursor-default self-end h-8',
-              errors.playerOneScore ? 'border-red-500' : 'border-slate-300'
-            )}
-            type={'number'}
-            min={0}
-            ref={playerOneInputRef}
-            value={playerOneScore}
+        <div className="w-full">
+          <div className='flex flex-row w-full'>
+            <PlayerSelect label="One" name={playerOneId} setName={setPlayerOneId} />
+            <input
+              className={clsx(
+                'border text-gray-900 text-sm rounded-sm block w-12 py-1 px-2 ml-1 cursor-default self-end h-8',
+                errors.playerOneScore ? 'border-red-500' : 'border-slate-300'
+              )}
+              type={'number'}
+              min={0}
+              ref={playerOneInputRef}
+              value={playerOneScore}
+              disabled={match.isLoading}
+              onChange={(e) => setPlayerOneScore(parseInt(e.target.value))}
+            />
+          </div>
+          <ScoreButtonGroup
+            score={playerOneScore}
+            setScore={setPlayerOneScore}
             disabled={match.isLoading}
-            onChange={(e) => setPlayerOneScore(parseInt(e.target.value))}
           />
         </div>
-        <div className="flex flex-row w-full">
-          <PlayerSelect label="Two" name={playerTwoId} setName={setPlayerTwoId} />
-          <input
-            className={clsx(
-              'border text-gray-900 text-sm rounded-sm block w-12 py-1 px-2 ml-1 cursor-default self-end h-8',
-              errors.playerTwoScore ? 'border-red-500' : 'border-slate-300'
-            )}
-            type={'number'}
-            min={0}
-            ref={playerTwoInputRef}
-            value={playerTwoScore}
+        <div className='w-full'>
+          <div className='flex flex-row w-full'>
+            <PlayerSelect label="Two" name={playerTwoId} setName={setPlayerTwoId} />
+            <input
+              className={clsx(
+                'border text-gray-900 text-sm rounded-sm block w-12 py-1 px-2 ml-1 cursor-default self-end h-8',
+                errors.playerTwoScore ? 'border-red-500' : 'border-slate-300'
+              )}
+              type={'number'}
+              min={0}
+              ref={playerTwoInputRef}
+              value={playerTwoScore}
+              disabled={match.isLoading}
+              onChange={(e) => setPlayerTwoScore(parseInt(e.target.value))}
+            />
+          </div>
+          <ScoreButtonGroup
+            score={playerTwoScore}
+            setScore={setPlayerTwoScore}
             disabled={match.isLoading}
-            onChange={(e) => setPlayerTwoScore(parseInt(e.target.value))}
           />
         </div>
       </div>
