@@ -11,7 +11,6 @@ interface Props {
 
 const Avatar: FC<Props> = ({ image, name, size = 48, bgColor = '#f0f0f0', fgColor = '#555555' }) => {
   const firstName = name.split(' ')[0];
-  console.log(firstName);
   const displayName = firstName || name;
 
   if (!image) {
