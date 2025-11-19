@@ -4,7 +4,6 @@ const getWelcomeMessage = () => {
     'Show us what you got! 💪',
     'Now supporting ELO! 💯',
     'Back already? Good luck 🍀',
-    'Version 2.0 - The Magnus Update 🧠',
     'Slack integration coming soon... 📲',
     'Welcome to REVIEWS.io ✪',
     '[insert inspirational quote here]',
