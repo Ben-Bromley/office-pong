@@ -6,6 +6,13 @@ import { useQueryClient } from 'react-query';
 import SectionTitle from '../shared/SectionTitle';
 import { ArrowRightCircle, ChevronDown, RotateCw } from 'lucide-react';
 import SectionCard from '../shared/SectionCard';
+import Avatar from '../shared/Avatar';
+
+interface ScoreButtonGroupProps {
+  score: number;
+  setScore: (score: number) => void;
+  disabled?: boolean;
+}
 
 interface PlayerSelectProps {
   label: 'One' | 'Two';
@@ -23,6 +30,9 @@ const NewGameForm: FC = () => {
   const users = trpc.useQuery(['user.getAll']);
   const match = trpc.useMutation(['match.create']);
   const { data: session } = useSession();
+  const frequentlyPlayed = trpc.useQuery(['user.frequentlyPlayed', { id: session?.user?.id ?? '' }], {
+    enabled: !!session?.user?.id
+  });
 
   const [playerOneId, setPlayerOneId] = useState(session?.user?.id ?? '');
   const [playerTwoId, setPlayerTwoId] = useState('');
@@ -74,12 +84,37 @@ const NewGameForm: FC = () => {
           queryClient.invalidateQueries(['user.scoreboard']);
           queryClient.invalidateQueries(['user.stats']);
           queryClient.invalidateQueries(['user.insights']);
+          queryClient.invalidateQueries(['user.frequentlyPlayed']);
         }
       }
     );
     setPlayerOneScore(0);
     setPlayerTwoScore(0);
-    setPlayerTwoId('');
+  };
+
+  const ScoreButtonGroup: FC<ScoreButtonGroupProps> = ({ score, setScore, disabled }) => {
+    const increments = [1, 5, 11];
+
+    return (
+      <div className="inline-flex w-full mt-2">
+        {increments.map((inc, idx) => (
+          <button
+            key={inc}
+            type="button"
+            disabled={disabled}
+            onClick={() => setScore(score + inc)}
+            className={clsx(
+              'w-full px-2 py-1 text-xs border border-slate-300 bg-slate-50 hover:bg-slate-100',
+              idx === 0 && 'rounded-l-lg',
+              idx === increments.length - 1 && 'rounded-r-lg',
+              idx > 0 && '-ml-px'
+            )}
+          >
+            +{inc}
+          </button>
+        ))}
+      </div>
+    );
   };
 
   const PlayerSelect: FC<PlayerSelectProps> = ({ label, name, setName }) => (
@@ -140,35 +175,68 @@ const NewGameForm: FC = () => {
     <SectionCard>
       <SectionTitle title="📝 &nbsp;New Game" />
       <div className="flex flex-row w-full gap-4">
-        <div className="flex flex-row w-full">
-          <PlayerSelect label="One" name={playerOneId} setName={setPlayerOneId} />
-          <input
-            className={clsx(
-              'border text-gray-900 text-sm rounded-sm block w-12 py-1 px-2 ml-1 cursor-default self-end h-8',
-              errors.playerOneScore ? 'border-red-500' : 'border-slate-300'
-            )}
-            type={'number'}
-            min={0}
-            ref={playerOneInputRef}
-            value={playerOneScore}
-            disabled={match.isLoading}
-            onChange={(e) => setPlayerOneScore(parseInt(e.target.value))}
-          />
+        <div className="w-full">
+          <div className="flex flex-row w-full">
+            <PlayerSelect label="One" name={playerOneId} setName={setPlayerOneId} />
+            <input
+              className={clsx(
+                'border text-gray-900 text-sm rounded-sm block w-12 py-1 px-2 ml-1 cursor-default self-end h-8',
+                errors.playerOneScore ? 'border-red-500' : 'border-slate-300'
+              )}
+              type={'number'}
+              min={0}
+              ref={playerOneInputRef}
+              value={playerOneScore}
+              disabled={match.isLoading}
+              onChange={(e) => setPlayerOneScore(parseInt(e.target.value))}
+            />
+          </div>
+          <ScoreButtonGroup score={playerOneScore} setScore={setPlayerOneScore} disabled={match.isLoading} />
         </div>
-        <div className="flex flex-row w-full">
-          <PlayerSelect label="Two" name={playerTwoId} setName={setPlayerTwoId} />
-          <input
-            className={clsx(
-              'border text-gray-900 text-sm rounded-sm block w-12 py-1 px-2 ml-1 cursor-default self-end h-8',
-              errors.playerTwoScore ? 'border-red-500' : 'border-slate-300'
-            )}
-            type={'number'}
-            min={0}
-            ref={playerTwoInputRef}
-            value={playerTwoScore}
-            disabled={match.isLoading}
-            onChange={(e) => setPlayerTwoScore(parseInt(e.target.value))}
-          />
+        <div className="w-full">
+          <div className="flex flex-row w-full">
+            <PlayerSelect label="Two" name={playerTwoId} setName={setPlayerTwoId} />
+            <input
+              className={clsx(
+                'border text-gray-900 text-sm rounded-sm block w-12 py-1 px-2 ml-1 cursor-default self-end h-8',
+                errors.playerTwoScore ? 'border-red-500' : 'border-slate-300'
+              )}
+              type={'number'}
+              min={0}
+              ref={playerTwoInputRef}
+              value={playerTwoScore}
+              disabled={match.isLoading}
+              onChange={(e) => setPlayerTwoScore(parseInt(e.target.value))}
+            />
+          </div>
+          <ScoreButtonGroup score={playerTwoScore} setScore={setPlayerTwoScore} disabled={match.isLoading} />
+        </div>
+      </div>
+
+      <div className="mt-6">
+        <p className="mb-1 text-xs text-slate-400">Frequently Played Against</p>
+        <div className="flex flex-row flex-wrap gap-2">
+          {frequentlyPlayed.isLoading &&
+            Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="flex flex-col items-center w-20 animate-pulse">
+                <div className="w-12 h-12 bg-slate-200 rounded-full" />
+                <div className="h-2 w-10 mt-2 bg-slate-200 rounded" />
+              </div>
+            ))}
+
+          {frequentlyPlayed.data && frequentlyPlayed.data.length > 0
+            ? frequentlyPlayed.data.map((player) => (
+                <button
+                  key={player.id}
+                  type="button"
+                  onClick={() => setPlayerTwoId(player.id)}
+                  disabled={match.isLoading || player.id === playerOneId}
+                  className="flex flex-col items-center w-20 p-2 rounded-lg hover:bg-slate-100 disabled:hover:bg-transparent disabled:opacity-40"
+                >
+                  <Avatar image={player.image} name={player.name ?? 'Player'} />
+                </button>
+              ))
+            : !frequentlyPlayed.isLoading && <p className="text-sm">No game history yet.</p>}
         </div>
       </div>
 

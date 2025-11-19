@@ -186,4 +186,59 @@ export const userRouter = createRouter()
         eloChange: eloChange
       };
     }
+  })
+  .query('frequentlyPlayed', {
+    input: z.object({
+      id: z.string(),
+      take: z.number().optional().default(5)
+    }),
+    async resolve({ ctx, input }) {
+      const matches = await ctx.prisma.match.findMany({
+        where: {
+          OR: [{ playerOneId: input.id }, { playerTwoId: input.id }]
+        },
+        select: {
+          playerOneId: true,
+          playerTwoId: true
+        }
+      });
+
+      if (matches.length === 0) {
+        return [];
+      }
+
+      const opponentCounts = matches.reduce((acc, match) => {
+        const opponentId = match.playerOneId === input.id ? match.playerTwoId : match.playerOneId;
+        acc[opponentId] = (acc[opponentId] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>);
+
+      const sortedOpponentIds = Object.keys(opponentCounts).sort(
+        (a, b) => opponentCounts[b]! - opponentCounts[a]!
+      );
+
+      const topOpponentIds = sortedOpponentIds.slice(0, input.take);
+
+      if (topOpponentIds.length === 0) {
+        return [];
+      }
+
+      const opponents = await ctx.prisma.user.findMany({
+        where: {
+          id: {
+            in: topOpponentIds
+          }
+        },
+        select: {
+          id: true,
+          name: true,
+          image: true
+        }
+      });
+
+      // Return sorted players by frequency
+      return opponents.sort(
+        (a, b) => opponentCounts[b.id]! - opponentCounts[a.id]!
+      )
+    }
   });
