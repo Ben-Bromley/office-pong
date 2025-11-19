@@ -102,7 +102,7 @@ const NewGameForm: FC = () => {
             key={inc}
             type="button"
             disabled={disabled}
-            onClick={() => setScore(score + inc)}
+            onClick={() => setScore((score ? score : 0) + inc)}
             className={clsx(
               'w-full px-2 py-1 text-xs border border-slate-300 bg-slate-50 hover:bg-slate-100',
               idx === 0 && 'rounded-l-lg',
@@ -188,7 +188,11 @@ const NewGameForm: FC = () => {
               ref={playerOneInputRef}
               value={playerOneScore}
               disabled={match.isLoading}
-              onChange={(e) => setPlayerOneScore(parseInt(e.target.value))}
+              onKeyDown={(e) => {if(!['ArrowUp', 'ArrowDown'].includes(e.key)) e.preventDefault()}}
+              onChange={(e) => {
+                const value = parseInt(e.target.value);
+                return setPlayerOneScore(!isNaN(value) ? value : 0);
+              }}
             />
           </div>
           <ScoreButtonGroup score={playerOneScore} setScore={setPlayerOneScore} disabled={match.isLoading} />
