@@ -10,6 +10,9 @@
     "postinstall": "prisma generate",
     "seed": "node prisma/seeder.js"
   },
+  "prisma": {
+    "seed": "node prisma/seeder.js"
+  },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.4",
     "@prisma/client": "^4.2.1",
